@@ -1,11 +1,15 @@
 # gui/main_window.py
 import tkinter as tk
 from tkinter import ttk
+import logging
 from core.database_manager import DatabaseManager
 
 # Importiere die neuen Tab-Klassen
 from .add_task_tab import AddTaskTab
 from .management_tab import ManagementTab
+
+logger = logging.getLogger(__name__)
+
 
 class KlausurApp(tk.Tk):
     def __init__(self):
@@ -30,11 +34,15 @@ class KlausurApp(tk.Tk):
         notebook.add(self.manage_tab, text="Verwaltung")
         notebook.add(generate_tab_placeholder, text="Klausur generieren")
 
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        logger.debug("UI-Setup abgeschlossen, alle Tabs initialisiert.")
+
+        # HIER IST DIE KORREKTUR:
+        # Nachdem die gesamte UI aufgebaut ist, stoßen wir das initiale Laden der Daten an.
+        self.on_modules_changed()
 
     def on_modules_changed(self):
         """Zentrale Methode, um alle relevanten UI-Teile zu aktualisieren."""
-        print("Controller: Module haben sich geändert, aktualisiere alle Tabs...")
+        logger.info("Moduldaten haben sich geändert, aktualisiere abhängige UI-Komponenten...")
         self.task_tab.update_module_dropdown()
         self.manage_tab.update_module_listbox()
 
@@ -47,5 +55,6 @@ class KlausurApp(tk.Tk):
         return None
 
     def on_closing(self):
+        logger.info("Schließungs-Protokoll aufgerufen.")
         self.db_manager.close()
         self.destroy()

@@ -1,6 +1,9 @@
 # gui/add_task_tab.py
 import tkinter as tk
 from tkinter import ttk, scrolledtext, messagebox
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class AddTaskTab(ttk.Frame):
@@ -12,6 +15,7 @@ class AddTaskTab(ttk.Frame):
         self.modules_data = []
         self.pools_data = []
         self.setup_widgets()
+        logger.debug("Aufgabe-hinzufügen-Tab initialisiert.")
 
     def setup_widgets(self):
         ttk.Label(self, text="Modul auswählen:").grid(row=0, column=0, sticky="w", pady=(0, 5))
@@ -38,7 +42,7 @@ class AddTaskTab(ttk.Frame):
         self.update_module_dropdown()
 
     def update_module_dropdown(self):
-        """Wird vom Controller aufgerufen, um die Modul-Liste zu aktualisieren."""
+        logger.debug("Modul-Dropdown wird aktualisiert.")
         self.modules_data = self.db_manager.get_modules()
         module_names = [name for id, name in self.modules_data]
         self.module_combo['values'] = module_names
@@ -47,6 +51,7 @@ class AddTaskTab(ttk.Frame):
 
     def on_module_selected(self, event=None):
         selected_module_name = self.module_var.get()
+        logger.debug(f"Modul '{selected_module_name}' ausgewählt. Lade zugehörige Pools.")
         selected_module_id = self.controller.get_id_from_name(self.modules_data, selected_module_name)
         if selected_module_id:
             self.pools_data = self.db_manager.get_pools_for_module(selected_module_id)
@@ -62,8 +67,10 @@ class AddTaskTab(ttk.Frame):
             return
         selected_pool_id = self.controller.get_id_from_name(self.pools_data, pool_name)
         if selected_pool_id:
+            logger.info(f"Speichere neue Aufgabe im Pool '{pool_name}' (ID: {selected_pool_id}).")
             self.db_manager.add_task(content, selected_pool_id)
             messagebox.showinfo("Erfolg", f"Aufgabe wurde zu '{pool_name}' hinzugefügt.")
             self.task_text.delete("1.0", tk.END)
         else:
+            logger.error(f"Konnte ID für Pool-Namen '{pool_name}' nicht finden.")
             messagebox.showerror("Fehler", "Pool nicht gefunden.")
