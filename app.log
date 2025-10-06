@@ -1,36 +1,61 @@
-2025-10-06 15:32:15,987 - INFO     - root                         - Anwendung wird gestartet...
-2025-10-06 15:32:16,032 - INFO     - core.database_manager        - Datenbankverbindung im Autocommit-Modus hergestellt.
-2025-10-06 15:32:16,052 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
-2025-10-06 15:32:16,052 - DEBUG    - gui.add_task_tab             - Aufgabe-hinzufügen-Tab initialisiert.
-2025-10-06 15:32:16,061 - DEBUG    - gui.main_window              - UI-Setup abgeschlossen, alle Tabs initialisiert.
-2025-10-06 15:32:16,061 - INFO     - gui.main_window              - Moduldaten haben sich geändert, aktualisiere abhängige UI-Komponenten...
-2025-10-06 15:32:16,061 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
-2025-10-06 15:32:16,061 - DEBUG    - gui.management_tab           - Modul-Liste wird aktualisiert.
-2025-10-06 15:32:18,600 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
-2025-10-06 15:32:19,557 - DEBUG    - gui.management_tab           - Pool ID 3 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-06 15:32:19,557 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 3.
-2025-10-06 15:32:21,059 - DEBUG    - gui.management_tab           - Kontextmenü für 'task' (ID: 7) angefordert.
-2025-10-06 15:32:21,727 - DEBUG    - gui.management_tab           - Bestätigungsdialog für Löschen von Aufgabe ID 7 wird angezeigt.
-2025-10-06 15:32:23,450 - INFO     - gui.management_tab           - Lösche Aufgabe ID 7...
-2025-10-06 15:32:23,465 - INFO     - core.database_manager        - Aufgabe ID 7 gelöscht.
-2025-10-06 15:32:23,465 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 3.
-2025-10-06 15:32:37,950 - DEBUG    - gui.management_tab           - Pool ID 1 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-06 15:32:37,950 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 1.
-2025-10-06 15:32:39,029 - DEBUG    - gui.management_tab           - Pool ID 2 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-06 15:32:39,029 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 2.
-2025-10-06 15:32:39,726 - DEBUG    - gui.management_tab           - Pool ID 1 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-06 15:32:39,726 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 1.
-2025-10-06 15:32:40,859 - DEBUG    - gui.management_tab           - Pool ID 3 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-06 15:32:40,860 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 3.
-2025-10-06 15:32:40,986 - DEBUG    - gui.management_tab           - Pool ID 3 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-06 15:32:40,987 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 3.
-2025-10-06 15:32:44,441 - DEBUG    - gui.add_task_tab             - Modul 'Wirtschaftsinformatik Grundlagen' ausgewählt. Lade zugehörige Pools.
-2025-10-06 15:32:54,499 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Aufgaben' (ID: 3).
-2025-10-06 15:32:54,514 - INFO     - core.database_manager        - Aufgabe (ID: 8) zu Pool ID 3 hinzugefügt.
-2025-10-06 15:33:00,489 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Aufgaben' (ID: 3).
-2025-10-06 15:33:00,496 - INFO     - core.database_manager        - Aufgabe (ID: 9) zu Pool ID 3 hinzugefügt.
-2025-10-06 15:33:06,524 - DEBUG    - gui.management_tab           - Pool ID 3 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-06 15:33:06,524 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 3.
-2025-10-06 15:33:07,843 - INFO     - gui.main_window              - Schließungs-Protokoll aufgerufen.
-2025-10-06 15:33:07,843 - INFO     - core.database_manager        - Datenbankverbindung geschlossen.
-2025-10-06 15:33:07,846 - INFO     - root                         - Anwendung wurde beendet.
+2025-10-06 18:34:59,506 - INFO     - root                         - Anwendung wird gestartet...
+2025-10-06 18:34:59,575 - INFO     - core.database_manager        - Datenbankverbindung im Autocommit-Modus hergestellt.
+2025-10-06 18:34:59,602 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
+2025-10-06 18:34:59,603 - DEBUG    - gui.add_task_tab             - Aufgabe-hinzufügen-Tab initialisiert.
+2025-10-06 18:34:59,609 - DEBUG    - gui.main_window              - UI-Setup abgeschlossen, alle Tabs initialisiert.
+2025-10-06 18:34:59,609 - INFO     - gui.main_window              - Moduldaten haben sich geändert, aktualisiere abhängige UI-Komponenten...
+2025-10-06 18:34:59,609 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
+2025-10-06 18:34:59,610 - DEBUG    - gui.management_tab           - Modul-Liste wird aktualisiert.
+2025-10-06 18:34:59,610 - DEBUG    - gui.generate_exam_tab        - GenerateTab: Modul-Dropdown wird aktualisiert.
+2025-10-06 18:35:03,675 - INFO     - gui.generate_exam_tab        - GenerateTab: Modul 'Wirtschaftsinformatik Grundlagen' (ID: 1) ausgewählt.
+2025-10-06 18:35:06,422 - DEBUG    - gui.generate_exam_tab        - '3: Aufgaben' zur Klausurstruktur hinzugefügt.
+2025-10-06 18:35:07,306 - INFO     - gui.generate_exam_tab        - Starte Klausur-Generierung für Modul 'Wirtschaftsinformatik Grundlagen'...
+2025-10-06 18:35:07,307 - INFO     - core.exam_builder            - Baue Klausur für Modul-ID 1...
+2025-10-06 18:35:07,307 - DEBUG    - core.exam_builder            - -> Konfiguration gefunden: Reihenfolge der Pools ist ['1', '2', '1']
+2025-10-06 18:35:07,307 - DEBUG    - core.exam_builder            - -> Wähle Aufgabe 1 aus Pool 1.
+2025-10-06 18:35:07,307 - DEBUG    - core.exam_builder            - -> Wähle Aufgabe 6 aus Pool 2.
+2025-10-06 18:35:07,307 - DEBUG    - core.exam_builder            - -> Wähle Aufgabe 2 aus Pool 1.
+2025-10-06 18:35:07,307 - INFO     - core.latex_generator         - Beginne PDF-Generierung für Modul 'Wirtschaftsinformatik Grundlagen'...
+2025-10-06 18:35:07,307 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-06 18:35:07,352 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-06 18:35:07,359 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-06 18:35:07,359 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-06 18:35:07,382 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-06 18:35:07,382 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-06 18:35:07,387 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-06 18:35:07,387 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-06 18:35:07,390 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-06 18:35:07,390 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-06 18:35:07,394 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-06 18:35:07,394 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-06 18:35:07,501 - ERROR    - core.latex_generator         - Fehler bei der LaTeX-Kompilierung. Überprüfe die 'Klausur_Wirtschaftsinformatik_Grundlagen.log' für Details.
+2025-10-06 18:35:07,501 - DEBUG    - core.latex_generator         - LaTeX-Fehlerausgabe:
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2026/dev/Arch Linux) (preloaded format=pdflatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Klausur_Wirtschaftsinformatik_Grundlagen.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(/usr/share/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2024/06/29 v1.4n Standard LaTeX document class
+(/usr/share/texmf-dist/tex/latex/base/size12.clo))
+(/usr/share/texmf-dist/tex/latex/base/inputenc.sty)
+(/usr/share/texmf-dist/tex/latex/base/fontenc.sty)
+
+! LaTeX Error: File `lmodern.sty' not found.
+
+Type X to quit or <RETURN> to proceed,
+or enter new name. (Default extension: sty)
+
+Enter file name: 
+! Emergency stop.
+<read *> 
+         
+l.6 \usepackage
+               {amsmath}^^M
+!  ==> Fatal error occurred, no output PDF file produced!
+Transcript written on Klausur_Wirtschaftsinformatik_Grundlagen.log.
+
+2025-10-06 18:35:14,549 - INFO     - gui.main_window              - Schließungs-Protokoll aufgerufen.
+2025-10-06 18:35:14,549 - INFO     - core.database_manager        - Datenbankverbindung geschlossen.
+2025-10-06 18:35:14,551 - INFO     - root                         - Anwendung wurde beendet.
