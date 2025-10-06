@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "NAK_Exam_Builder"
+version = "0.1.0"
+description = "A Python package created by Genesis."
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{ name = "Genesis User", email = "user@example.com" }]
+dependencies = []
+
+[project.scripts]
+NAK_Exam_Builder = "NAK_Exam_Builder.cli:main"
