@@ -1,8 +1,165 @@
-2025-10-07 08:51:15,899 - INFO     - core.database_manager        - Datenbankverbindung im Autocommit-Modus hergestellt.
-2025-10-07 08:51:15,936 - DEBUG    - gui.app_styles               - Clam-Theme wird für modernes Styling verwendet.
-2025-10-07 08:51:15,943 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
-2025-10-07 08:51:15,944 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
-2025-10-07 08:51:15,944 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
-2025-10-07 08:51:15,944 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
-2025-10-07 08:51:15,968 - DEBUG    - gui.main_window              - Anwendungs-Icon erfolgreich geladen.
-2025-10-07 08:51:15,990 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
+2025-10-07 09:01:32,484 - INFO     - __main__                     - Initialisiere Datenbank...
+2025-10-07 09:01:32,484 - INFO     - core.database_manager        - Datenbankverbindung im Autocommit-Modus hergestellt.
+2025-10-07 09:01:32,485 - DEBUG    - core.database_manager        - Tabellen-Setup abgeschlossen.
+2025-10-07 09:01:32,521 - DEBUG    - gui.app_styles               - Clam-Theme wird für modernes Styling verwendet.
+2025-10-07 09:01:32,528 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
+2025-10-07 09:01:32,528 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
+2025-10-07 09:01:32,528 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
+2025-10-07 09:01:32,528 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
+2025-10-07 09:01:32,551 - DEBUG    - gui.main_window              - Anwendungs-Icon erfolgreich geladen.
+2025-10-07 09:01:32,575 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
+2025-10-07 09:01:32,575 - DEBUG    - gui.add_task_tab             - Aufgabe-hinzufügen-Tab initialisiert.
+2025-10-07 09:01:32,583 - DEBUG    - gui.main_window              - UI-Setup abgeschlossen, alle Tabs initialisiert.
+2025-10-07 09:01:32,583 - INFO     - gui.main_window              - Moduldaten haben sich geändert, aktualisiere UI-Komponenten...
+2025-10-07 09:01:32,583 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
+2025-10-07 09:01:32,583 - DEBUG    - gui.management_tab           - Modul-Liste wird aktualisiert.
+2025-10-07 09:01:32,584 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
+2025-10-07 09:01:32,584 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
+2025-10-07 09:01:32,584 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
+2025-10-07 09:01:32,584 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
+2025-10-07 09:01:33,610 - DEBUG    - core.database_manager        - Tabellen-Setup abgeschlossen.
+2025-10-07 09:01:35,812 - INFO     - root                         - Anwendung wird gestartet...
+2025-10-07 09:03:15,070 - INFO     - gui.management_tab           - Versuche, neues Modul zu erstellen: 'EidooP'
+2025-10-07 09:03:15,096 - INFO     - core.database_manager        - Modul 'EidooP' (ID: 1) hinzugefügt.
+2025-10-07 09:03:15,096 - INFO     - gui.main_window              - Moduldaten haben sich geändert, aktualisiere UI-Komponenten...
+2025-10-07 09:03:15,096 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
+2025-10-07 09:03:15,096 - DEBUG    - gui.management_tab           - Modul-Liste wird aktualisiert.
+2025-10-07 09:03:18,653 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:03:19,507 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:03:24,766 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:03:47,180 - INFO     - gui.management_tab           - Füge neuen Pool 'Einfache Methoden' zu Modul ID 1 hinzu.
+2025-10-07 09:03:47,208 - INFO     - core.database_manager        - Pool 'Einfache Methoden' (ID: 1) zu Modul ID 1 hinzugefügt.
+2025-10-07 09:03:47,208 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:03:57,687 - INFO     - gui.management_tab           - Füge neuen Pool 'Algorithmenanalyse' zu Modul ID 1 hinzu.
+2025-10-07 09:03:57,706 - INFO     - core.database_manager        - Pool 'Algorithmenanalyse' (ID: 2) zu Modul ID 1 hinzugefügt.
+2025-10-07 09:03:57,706 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:04:14,157 - INFO     - gui.management_tab           - Füge neuen Pool 'Wahr/Falsch' zu Modul ID 1 hinzu.
+2025-10-07 09:04:14,179 - INFO     - core.database_manager        - Pool 'Wahr/Falsch' (ID: 3) zu Modul ID 1 hinzugefügt.
+2025-10-07 09:04:14,179 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:04:24,393 - INFO     - gui.management_tab           - Füge neuen Pool 'Arbeiten mit Listen' zu Modul ID 1 hinzu.
+2025-10-07 09:04:24,416 - INFO     - core.database_manager        - Pool 'Arbeiten mit Listen' (ID: 4) zu Modul ID 1 hinzugefügt.
+2025-10-07 09:04:24,416 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:04:40,257 - INFO     - gui.management_tab           - Füge neuen Pool 'Arbeiten mit Objekten' zu Modul ID 1 hinzu.
+2025-10-07 09:04:40,278 - INFO     - core.database_manager        - Pool 'Arbeiten mit Objekten' (ID: 5) zu Modul ID 1 hinzugefügt.
+2025-10-07 09:04:40,278 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:04:49,179 - INFO     - gui.management_tab           - Füge neuen Pool 'Typen und Zuweisungen' zu Modul ID 1 hinzu.
+2025-10-07 09:04:49,196 - INFO     - core.database_manager        - Pool 'Typen und Zuweisungen' (ID: 6) zu Modul ID 1 hinzugefügt.
+2025-10-07 09:04:49,196 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:04:50,650 - DEBUG    - gui.management_tab           - Pool ID 4 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:04:50,650 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 4.
+2025-10-07 09:04:50,793 - DEBUG    - gui.management_tab           - Pool ID 4 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:04:50,793 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 4.
+2025-10-07 09:04:51,200 - DEBUG    - gui.management_tab           - Pool ID 4 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:04:51,200 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 4.
+2025-10-07 09:04:51,361 - DEBUG    - gui.management_tab           - Kontextmenü für 'pool' (ID: 4) angefordert.
+2025-10-07 09:04:54,490 - DEBUG    - gui.management_tab           - Pool ID 6 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:04:54,490 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 6.
+2025-10-07 09:04:55,954 - DEBUG    - gui.management_tab           - Kontextmenü für 'pool' (ID: 3) angefordert.
+2025-10-07 09:04:56,558 - DEBUG    - gui.management_tab           - Bestätigungsdialog für Löschen von Pool ID 3 wird angezeigt.
+2025-10-07 09:04:57,641 - INFO     - gui.management_tab           - Lösche Pool ID 3...
+2025-10-07 09:04:57,662 - INFO     - core.database_manager        - Pool ID 3 gelöscht.
+2025-10-07 09:05:08,577 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:05:10,063 - INFO     - gui.management_tab           - Füge neuen Pool 'Allgemein Wahr/Falsch' zu Modul ID 1 hinzu.
+2025-10-07 09:05:10,086 - INFO     - core.database_manager        - Pool 'Allgemein Wahr/Falsch' (ID: 7) zu Modul ID 1 hinzugefügt.
+2025-10-07 09:05:10,086 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:05:26,710 - INFO     - gui.management_tab           - Füge neuen Pool 'Logik und Schleifen' zu Modul ID 1 hinzu.
+2025-10-07 09:05:26,725 - INFO     - core.database_manager        - Pool 'Logik und Schleifen' (ID: 8) zu Modul ID 1 hinzugefügt.
+2025-10-07 09:05:26,725 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:05:34,540 - INFO     - gui.management_tab           - Füge neuen Pool 'Vererbung und Konstruktoren' zu Modul ID 1 hinzu.
+2025-10-07 09:05:34,562 - INFO     - core.database_manager        - Pool 'Vererbung und Konstruktoren' (ID: 9) zu Modul ID 1 hinzugefügt.
+2025-10-07 09:05:34,562 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
+2025-10-07 09:06:12,100 - DEBUG    - gui.management_tab           - Pool ID 2 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:06:12,100 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 2.
+2025-10-07 09:06:43,986 - DEBUG    - gui.management_tab           - Pool ID 1 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:06:43,987 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 1.
+2025-10-07 09:06:47,328 - DEBUG    - gui.add_task_tab             - Modul 'EidooP' ausgewählt. Lade zugehörige Pools.
+2025-10-07 09:06:51,799 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Einfache Methoden' (ID: 1).
+2025-10-07 09:06:51,809 - INFO     - core.database_manager        - Aufgabe (ID: 1) zu Pool ID 1 hinzugefügt.
+2025-10-07 09:07:22,666 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Algorithmenanalyse' (ID: 2).
+2025-10-07 09:07:22,676 - INFO     - core.database_manager        - Aufgabe (ID: 2) zu Pool ID 2 hinzugefügt.
+2025-10-07 09:08:01,070 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Allgemein Wahr/Falsch' (ID: 7).
+2025-10-07 09:08:01,084 - INFO     - core.database_manager        - Aufgabe (ID: 3) zu Pool ID 7 hinzugefügt.
+2025-10-07 09:08:20,757 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Allgemein Wahr/Falsch' (ID: 7).
+2025-10-07 09:08:20,766 - INFO     - core.database_manager        - Aufgabe (ID: 4) zu Pool ID 7 hinzugefügt.
+2025-10-07 09:08:39,900 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Arbeiten mit Listen' (ID: 4).
+2025-10-07 09:08:39,914 - INFO     - core.database_manager        - Aufgabe (ID: 5) zu Pool ID 4 hinzugefügt.
+2025-10-07 09:08:44,550 - DEBUG    - gui.management_tab           - Pool ID 7 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:08:44,550 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 7.
+2025-10-07 09:08:44,710 - DEBUG    - gui.management_tab           - Pool ID 7 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:08:44,710 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 7.
+2025-10-07 09:08:45,687 - INFO     - gui.management_tab           - Bearbeiten-Fenster für Aufgabe ID 4 wird geöffnet.
+2025-10-07 09:08:53,800 - DEBUG    - gui.management_tab           - Kontextmenü für 'task' (ID: 4) angefordert.
+2025-10-07 09:08:54,321 - DEBUG    - gui.management_tab           - Bestätigungsdialog für Löschen von Aufgabe ID 4 wird angezeigt.
+2025-10-07 09:08:55,251 - INFO     - gui.management_tab           - Lösche Aufgabe ID 4...
+2025-10-07 09:08:55,266 - INFO     - core.database_manager        - Aufgabe ID 4 gelöscht.
+2025-10-07 09:08:55,266 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 7.
+2025-10-07 09:09:03,137 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Arbeiten mit Listen' (ID: 4).
+2025-10-07 09:09:03,151 - INFO     - core.database_manager        - Aufgabe (ID: 6) zu Pool ID 4 hinzugefügt.
+2025-10-07 09:09:24,557 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Arbeiten mit Objekten' (ID: 5).
+2025-10-07 09:09:24,582 - INFO     - core.database_manager        - Aufgabe (ID: 7) zu Pool ID 5 hinzugefügt.
+2025-10-07 09:10:02,156 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Typen und Zuweisungen' (ID: 6).
+2025-10-07 09:10:02,178 - INFO     - core.database_manager        - Aufgabe (ID: 8) zu Pool ID 6 hinzugefügt.
+2025-10-07 09:10:26,500 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Logik und Schleifen' (ID: 8).
+2025-10-07 09:10:26,522 - INFO     - core.database_manager        - Aufgabe (ID: 9) zu Pool ID 8 hinzugefügt.
+2025-10-07 09:10:38,543 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Vererbung und Konstruktoren' (ID: 9).
+2025-10-07 09:10:38,566 - INFO     - core.database_manager        - Aufgabe (ID: 10) zu Pool ID 9 hinzugefügt.
+2025-10-07 09:10:55,130 - INFO     - gui.add_task_tab             - Speichere neue Aufgabe im Pool 'Typen und Zuweisungen' (ID: 6).
+2025-10-07 09:10:55,152 - INFO     - core.database_manager        - Aufgabe (ID: 11) zu Pool ID 6 hinzugefügt.
+2025-10-07 09:11:00,750 - DEBUG    - gui.management_tab           - Pool ID 2 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:11:00,750 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 2.
+2025-10-07 09:11:01,413 - DEBUG    - gui.management_tab           - Pool ID 7 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:11:01,413 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 7.
+2025-10-07 09:11:01,993 - DEBUG    - gui.management_tab           - Pool ID 4 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:11:01,993 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 4.
+2025-10-07 09:11:02,750 - DEBUG    - gui.management_tab           - Pool ID 5 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:11:02,750 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 5.
+2025-10-07 09:11:03,340 - DEBUG    - gui.management_tab           - Pool ID 1 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:11:03,340 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 1.
+2025-10-07 09:11:03,920 - DEBUG    - gui.management_tab           - Pool ID 8 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:11:03,920 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 8.
+2025-10-07 09:11:04,480 - DEBUG    - gui.management_tab           - Pool ID 6 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:11:04,480 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 6.
+2025-10-07 09:11:05,083 - DEBUG    - gui.management_tab           - Pool ID 9 als aktueller Kontext gesetzt. Lade Aufgaben.
+2025-10-07 09:11:05,084 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 9.
+2025-10-07 09:11:34,724 - INFO     - core.database_manager        - Datenbankverbindung im Autocommit-Modus hergestellt.
+2025-10-07 09:11:34,724 - INFO     - core.latex_generator         - Konvertiere Markdown und erstelle .tex-Datei...
+2025-10-07 09:11:34,725 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-07 09:11:35,361 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-07 09:11:35,368 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-07 09:11:35,369 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-07 09:11:35,392 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-07 09:11:35,392 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-07 09:11:35,396 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-07 09:11:35,396 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-07 09:11:35,400 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-07 09:11:35,400 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-07 09:11:35,405 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-07 09:11:35,405 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-07 09:11:35,452 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-07 09:11:35,452 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-07 09:11:35,456 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-07 09:11:35,456 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-07 09:11:35,473 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-07 09:11:35,474 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-07 09:11:35,478 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-07 09:11:35,478 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-07 09:11:35,496 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-07 09:11:35,496 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-07 09:11:35,500 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-07 09:11:35,501 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-07 09:11:35,510 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-07 09:11:35,510 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-07 09:11:35,514 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-07 09:11:35,514 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-07 09:11:35,519 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-07 09:11:35,519 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-07 09:11:35,523 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-07 09:11:35,523 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-07 09:11:35,541 - DEBUG    - pypandoc                     - Ensuring pandoc path...
+2025-10-07 09:11:35,541 - DEBUG    - pypandoc                     - Verifying format...
+2025-10-07 09:11:35,545 - DEBUG    - pypandoc                     - Identifying input type...
+2025-10-07 09:11:35,545 - DEBUG    - pypandoc                     - Running pandoc...
+2025-10-07 09:11:35,562 - INFO     - core.latex_generator         - Führe lualatex aus...
+2025-10-07 09:11:37,681 - INFO     - core.latex_generator         - PDF 'Klausur_EidooP.pdf' erfolgreich erstellt!
+2025-10-07 09:11:37,681 - DEBUG    - core.latex_generator         - Räume temporäre Dateien auf...
+2025-10-07 09:11:37,681 - INFO     - core.database_manager        - Datenbankverbindung geschlossen.

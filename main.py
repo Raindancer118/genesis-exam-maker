@@ -8,22 +8,24 @@ from gui.splash_screen import SplashScreen
 from core.logger_config import setup_logging
 from core.database_manager import DatabaseManager
 
-# HIER IST DIE KORREKTUR: Logger für diese Datei definieren
 logger = logging.getLogger(__name__)
 
 
 def run_startup_checks(splash, db_manager):
-    """Führt die System-Checks aus und aktualisiert den Splash Screen."""
+    """Führt die System-Checks mit detaillierter Fortschrittsanzeige aus."""
     try:
+        # Check 1: Abhängigkeiten
         splash.update_progress(20, "Prüfe Abhängigkeiten (LuaLaTeX, Pandoc)...")
         time.sleep(0.5)
         if not shutil.which("lualatex"): raise RuntimeError("LuaLaTeX nicht im System-PATH gefunden.")
         if not shutil.which("pandoc"): raise RuntimeError("Pandoc nicht im System-PATH gefunden.")
 
+        # Check 2: Datenbank
         splash.update_progress(60, "Prüfe Datenbankverbindung...")
         time.sleep(0.5)
         db_manager.setup_database()
 
+        # Kosmetische Updates für den Lade-Effekt
         splash.update_progress(80, "Lade Komponenten...")
         time.sleep(0.5)
         splash.update_progress(83, "Lade Komponenten...")
@@ -45,7 +47,10 @@ def run_startup_checks(splash, db_manager):
 if __name__ == '__main__':
     setup_logging()
 
+    logger.info("Initialisiere Datenbank...")
     db = DatabaseManager()
+    db.setup_database()
+
     app = KlausurApp(db)
     app.withdraw()
 
