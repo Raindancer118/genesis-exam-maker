@@ -1,40 +1,19 @@
-2025-10-07 08:24:13,299 - INFO     - core.database_manager        - Datenbankverbindung im Autocommit-Modus hergestellt.
-2025-10-07 08:24:13,338 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
-2025-10-07 08:24:13,338 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
-2025-10-07 08:24:13,338 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
-2025-10-07 08:24:13,338 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
-2025-10-07 08:24:13,382 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
-2025-10-07 08:24:13,382 - DEBUG    - gui.add_task_tab             - Aufgabe-hinzufügen-Tab initialisiert.
-2025-10-07 08:24:13,388 - DEBUG    - gui.main_window              - UI-Setup abgeschlossen, alle Tabs initialisiert.
-2025-10-07 08:24:13,388 - INFO     - gui.main_window              - Moduldaten haben sich geändert, aktualisiere UI-Komponenten...
-2025-10-07 08:24:13,388 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
-2025-10-07 08:24:13,388 - DEBUG    - gui.management_tab           - Modul-Liste wird aktualisiert.
-2025-10-07 08:24:13,388 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
-2025-10-07 08:24:13,389 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
-2025-10-07 08:24:13,389 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
-2025-10-07 08:24:13,389 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
-2025-10-07 08:24:14,412 - DEBUG    - core.database_manager        - Tabellen-Setup abgeschlossen.
-2025-10-07 08:24:16,615 - INFO     - root                         - Anwendung wird gestartet...
-2025-10-07 08:24:49,075 - INFO     - core.import_export_manager   - Daten erfolgreich nach '/media/data/Downloads/WinfGrundlagen.geex' exportiert.
-2025-10-07 08:25:13,144 - INFO     - core.import_export_manager   - Import abgeschlossen!
-
-Neue Module: 0
-Neue Pools: 0
-Neue Aufgaben: 0
-Übersprungene Duplikate: 2
-2025-10-07 08:25:15,131 - INFO     - gui.main_window              - Moduldaten haben sich geändert, aktualisiere UI-Komponenten...
-2025-10-07 08:25:15,131 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
-2025-10-07 08:25:15,131 - DEBUG    - gui.management_tab           - Modul-Liste wird aktualisiert.
-2025-10-07 08:25:21,480 - DEBUG    - gui.management_tab           - Modul ID 1 ausgewählt. Lade Pools.
-2025-10-07 08:25:22,540 - DEBUG    - gui.management_tab           - Pool ID 2 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-07 08:25:22,541 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 2.
-2025-10-07 08:25:25,007 - DEBUG    - gui.management_tab           - Pool ID 1 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-07 08:25:25,007 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 1.
-2025-10-07 08:25:27,657 - DEBUG    - gui.management_tab           - Pool ID 3 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-07 08:25:27,657 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 3.
-2025-10-07 08:25:28,270 - DEBUG    - gui.management_tab           - Pool ID 1 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-07 08:25:28,270 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 1.
-2025-10-07 08:25:28,887 - DEBUG    - gui.management_tab           - Pool ID 2 als aktueller Kontext gesetzt. Lade Aufgaben.
-2025-10-07 08:25:28,887 - DEBUG    - gui.management_tab           - Aktualisiere Aufgabenliste für Pool ID 2.
-2025-10-07 08:25:33,364 - INFO     - gui.main_window              - Schließungs-Protokoll aufgerufen.
-2025-10-07 08:25:33,364 - INFO     - core.database_manager        - Datenbankverbindung geschlossen.
+2025-10-07 08:28:04,480 - INFO     - core.database_manager        - Datenbankverbindung im Autocommit-Modus hergestellt.
+2025-10-07 08:28:04,520 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
+2025-10-07 08:28:04,520 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
+2025-10-07 08:28:04,520 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
+2025-10-07 08:28:04,520 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
+2025-10-07 08:28:04,566 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
+2025-10-07 08:28:04,566 - DEBUG    - gui.add_task_tab             - Aufgabe-hinzufügen-Tab initialisiert.
+2025-10-07 08:28:04,572 - DEBUG    - gui.main_window              - UI-Setup abgeschlossen, alle Tabs initialisiert.
+2025-10-07 08:28:04,572 - INFO     - gui.main_window              - Moduldaten haben sich geändert, aktualisiere UI-Komponenten...
+2025-10-07 08:28:04,572 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
+2025-10-07 08:28:04,572 - DEBUG    - gui.management_tab           - Modul-Liste wird aktualisiert.
+2025-10-07 08:28:04,572 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
+2025-10-07 08:28:04,572 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
+2025-10-07 08:28:04,572 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
+2025-10-07 08:28:04,572 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
+2025-10-07 08:28:05,597 - DEBUG    - core.database_manager        - Tabellen-Setup abgeschlossen.
+2025-10-07 08:28:07,800 - INFO     - root                         - Anwendung wird gestartet...
+2025-10-07 08:28:37,407 - INFO     - gui.main_window              - Schließungs-Protokoll aufgerufen.
+2025-10-07 08:28:37,407 - INFO     - core.database_manager        - Datenbankverbindung geschlossen.
