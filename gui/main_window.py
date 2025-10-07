@@ -8,32 +8,43 @@ from .add_task_tab import AddTaskTab
 from .management_tab import ManagementTab
 from .generate_exam_tab import GenerateExamTab
 from .import_export_tab import ImportExportTab
-from .app_styles import setup_styles  # NEUER IMPORT
+from .app_styles import setup_styles
+import os
+import sys
 
 logger = logging.getLogger(__name__)
 
+def resource_path(relative_path):
+    """ Ermittelt den korrekten Pfad für Ressourcen, egal ob im Skript oder in einer PyInstaller-Datei. """
+    try:
+        # PyInstaller erstellt einen temporären Ordner und speichert den Pfad in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 class KlausurApp(tk.Tk):
     def __init__(self, db_manager: DatabaseManager):
         super().__init__()
 
-        # --- HIER WIRD DAS THEME GELADEN ---
         setup_styles(self)
-
         self.title("Genesis Exam Maker")
-        # ... Rest von __init__ bleibt gleich ...
         self.geometry("1200x700")
+
         try:
-            icon_image = Image.open("assets/genesis-exam-maker.png")
+            icon_path = resource_path("assets/genesis-exam-maker.png")
+            icon_image = Image.open(icon_path)
             photo = ImageTk.PhotoImage(icon_image)
             self.wm_iconphoto(False, photo)
+            logger.debug("Anwendungs-Icon erfolgreich geladen.")
         except Exception as e:
             logger.warning(f"Konnte Anwendungs-Icon nicht laden: {e}")
+
         self.db_manager = db_manager
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.setup_ui()
 
-    # ... der Rest der Datei bleibt unverändert ...
     def setup_ui(self):
         # ...
         notebook = ttk.Notebook(self)

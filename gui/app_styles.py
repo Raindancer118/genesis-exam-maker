@@ -4,12 +4,16 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# --- Farb- und Schrift-Palette (Apple-like) ---
-BG_COLOR = "#F5F5F7"         # Leicht abgedunkeltes Weiß
-FG_COLOR = "#333333"         # Dunkelgrau statt hartem Schwarz
-ACCENT_COLOR = "#007AFF"     # Apple's System-Blau
-LIGHT_GRAY = "#EAEAEA"
-BORDER_COLOR = "#DCDCDC"
+# --- HIER SIND DIE KORREKTUREN ---
+# Angepasste Farb- und Schrift-Palette
+BG_COLOR = "#F5F5F7"
+FG_COLOR = "#333333"
+# Ein weicheres, weniger sattes Blau
+ACCENT_COLOR = "#0071E3"
+# Ein etwas dunkleres Grau für besseren Kontrast
+LIGHT_GRAY = "#DDDDDD"
+BORDER_COLOR = "#D1D1D6"
+# --- ENDE DER KORREKTUREN ---
 
 BASE_FONT = ("Helvetica", 10)
 BOLD_FONT = ("Helvetica", 10, "bold")
@@ -45,13 +49,13 @@ def setup_styles(root):
                     bordercolor=ACCENT_COLOR,
                     padding=(10, 5))
     style.map('TButton',
-              background=[('active', '#005ecb')]) # Dunkler bei Klick
+              background=[('active', '#0059b3')]) # Dunkler bei Klick
 
     # Notebook (Tabs)
     style.configure('TNotebook', background=BG_COLOR, borderwidth=0)
     style.configure('TNotebook.Tab',
                     background=BG_COLOR,
-                    foreground='#888888', # Inaktive Tabs sind grau
+                    foreground='#888888',
                     font=BASE_FONT,
                     padding=[15, 8],
                     borderwidth=0)
@@ -75,7 +79,6 @@ def setup_styles(root):
                         })
                     ]
                 }),
-                # Diese "underline" ist ein dünner Border am unteren Rand
                 ("TNotebook.underline", {"side": "bottom", "sticky": "ew"})
             ]
         })
@@ -89,7 +92,7 @@ def setup_styles(root):
     style.configure('TEntry',
                     fieldbackground=LIGHT_GRAY,
                     foreground=FG_COLOR,
-                    insertcolor=FG_COLOR, # Cursor-Farbe
+                    insertcolor=FG_COLOR,
                     bordercolor=BORDER_COLOR)
     style.configure('TCombobox',
                     fieldbackground=LIGHT_GRAY,

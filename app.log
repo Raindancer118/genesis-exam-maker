@@ -1,20 +1,8 @@
-2025-10-07 08:32:21,489 - INFO     - core.database_manager        - Datenbankverbindung im Autocommit-Modus hergestellt.
-2025-10-07 08:32:21,531 - DEBUG    - gui.app_styles               - Clam-Theme wird für modernes Styling verwendet.
-2025-10-07 08:32:21,538 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
-2025-10-07 08:32:21,538 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
-2025-10-07 08:32:21,538 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
-2025-10-07 08:32:21,538 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
-2025-10-07 08:32:21,592 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
-2025-10-07 08:32:21,593 - DEBUG    - gui.add_task_tab             - Aufgabe-hinzufügen-Tab initialisiert.
-2025-10-07 08:32:21,602 - DEBUG    - gui.main_window              - UI-Setup abgeschlossen, alle Tabs initialisiert.
-2025-10-07 08:32:21,603 - INFO     - gui.main_window              - Moduldaten haben sich geändert, aktualisiere UI-Komponenten...
-2025-10-07 08:32:21,603 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
-2025-10-07 08:32:21,603 - DEBUG    - gui.management_tab           - Modul-Liste wird aktualisiert.
-2025-10-07 08:32:21,603 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
-2025-10-07 08:32:21,603 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
-2025-10-07 08:32:21,603 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
-2025-10-07 08:32:21,603 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
-2025-10-07 08:32:22,634 - DEBUG    - core.database_manager        - Tabellen-Setup abgeschlossen.
-2025-10-07 08:32:24,837 - INFO     - root                         - Anwendung wird gestartet...
-2025-10-07 08:32:26,401 - INFO     - gui.main_window              - Schließungs-Protokoll aufgerufen.
-2025-10-07 08:32:26,401 - INFO     - core.database_manager        - Datenbankverbindung geschlossen.
+2025-10-07 08:51:15,899 - INFO     - core.database_manager        - Datenbankverbindung im Autocommit-Modus hergestellt.
+2025-10-07 08:51:15,936 - DEBUG    - gui.app_styles               - Clam-Theme wird für modernes Styling verwendet.
+2025-10-07 08:51:15,943 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IHDR' 16 13
+2025-10-07 08:51:15,944 - DEBUG    - PIL.PngImagePlugin           - STREAM b'pHYs' 41 9
+2025-10-07 08:51:15,944 - DEBUG    - PIL.PngImagePlugin           - STREAM b'iTXt' 62 1200
+2025-10-07 08:51:15,944 - DEBUG    - PIL.PngImagePlugin           - STREAM b'IDAT' 1274 92949
+2025-10-07 08:51:15,968 - DEBUG    - gui.main_window              - Anwendungs-Icon erfolgreich geladen.
+2025-10-07 08:51:15,990 - DEBUG    - gui.add_task_tab             - Modul-Dropdown wird aktualisiert.
