@@ -1,20 +1,141 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <title>View Module</title>
-    <link rel="stylesheet" href="../css/style.css">
+  <meta charset="utf-8" />
+  <title>Module — Genesis Exam Maker</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1 id="module-name-heading"></h1>
-        <h2>Pools</h2>
-        <ul id="pool-list" class="pool-list"></ul>
-        <div class="form-group">
-            <input type="text" id="pool-name" placeholder="New pool name">
-            <button id="add-pool-btn">Add Pool</button>
+  <div class="app-shell">
+
+    <!-- Reuse hero/header from main for consistent width & look -->
+    <header class="hero page-inner">
+      <div class="hero-bg">
+        <img src="../../assets/Hamburg.jpg" alt="Header" class="hero-image" />
+        <div class="hero-inner">
+          <div class="hero-top" style="width:100%;">
+            <div class="logo-plate"><img src="../../assets/genesis-exam-maker.png" alt="Genesis" class="logo" /></div>
+            <div class="hero-text">
+              <h1 id="moduleTitle">Module</h1>
+              <p class="lead" id="moduleSubtitle">Details & Pools</p>
+            </div>
+            <div class="status-inline">
+              <span id="statusDot" class="status-dot checking"></span>
+              <span id="statusText">DB: verbinde…</span>
+            </div>
+          </div>
         </div>
-        <a href="index.html">Back to Home</a>
+      </div>
+
+      <div class="hero-actions">
+        <div class="action-left">
+          <button id="btnBack" class="btn">← Zurück</button>
+          <button id="btnAddPool" class="btn btn-primary">Pool hinzufügen</button>
+          <button id="btnAddTask" class="btn btn-ghost">Aufgabe hinzufügen</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- Module info + actions -->
+      <section class="card page-inner module-view" id="moduleView">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;">
+          <div>
+            <h2 id="moduleName">—</h2>
+            <div class="hint" id="moduleMeta">ID: —</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="hint">Pools: <span id="poolCount">0</span> • Aufgaben gesamt: <span id="taskCount">0</span></div>
+          </div>
+        </div>
+
+        <!-- Pools grid (cards) -->
+        <div id="poolsGrid" class="modules-grid"></div>
+
+        <div id="poolsEmpty" class="empty-state hidden" style="margin-top:14px;">
+          <div class="empty-card">Keine Pools gefunden. Lege einen neuen Pool an.</div>
+        </div>
+      </section>
+
+      <!-- Right below: tasks list (full width) -->
+      <section class="card page-inner" id="taskListSection" style="display:none; margin-top: 12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 id="tasksTitle">Aufgaben im Pool</h3>
+          <div class="hint" id="tasksSubtitle">—</div>
+        </div>
+        <div id="tasksContainer" style="margin-top:12px;"></div>
+        <div id="tasksEmpty" class="empty-state hidden" style="margin-top:12px;">
+          <div class="empty-card">Keine Aufgaben in diesem Pool.</div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer page-inner">
+      <div class="footer-left small muted">- Copyright ©2025 @Raindancer118 -</div>
+    </footer>
+  </div>
+
+  <!-- Reuse the existing modals (createPoolModal, createTaskModal, confirmModal) -->
+  <!-- If not present on the page yet, we include quick inline duplicates to ensure functionality. -->
+  <!-- For safety we reference the modals you already added on index; if you didn't include them site-wide, it's safe to add minimal ones here. -->
+
+  <!-- minimal fallback modals if not present (won't conflict if they already exist) -->
+  <div id="createPoolModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Neuen Pool anlegen</h3>
+        <button id="closeCreatePool" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="hint">Wird zu Modul ID: <strong id="poolModuleIdDisplay">—</strong> hinzugefügt</div>
+        <input id="newPoolName" type="text" placeholder="Name des neuen Pools">
+      </div>
+      <div class="modal-actions">
+        <button id="cancelCreatePool" class="btn btn-ghost">Abbrechen</button>
+        <button id="confirmCreatePool" class="btn btn-primary">Anlegen</button>
+      </div>
     </div>
-    <script src="../js/view_module.js"></script>
+  </div>
+
+  <div id="createTaskModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Aufgabe hinzufügen / bearbeiten</h3>
+        <button id="closeCreateTask" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="hint">Pool: <strong id="taskPoolInfo">—</strong></div>
+        <textarea id="newTaskContent" placeholder="Aufgabe im Markdown-Format"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelCreateTask" class="btn btn-ghost">Abbrechen</button>
+        <button id="confirmCreateTask" class="btn btn-primary">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width:520px;">
+      <div class="modal-header">
+        <h3 id="confirmTitle" class="modal-title">Bestätigung</h3>
+        <button id="confirmClose" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage">Bist du sicher?</p>
+      </div>
+      <div class="modal-actions">
+        <button id="confirmCancel" class="btn btn-ghost">Abbrechen</button>
+        <button id="confirmOk" class="btn btn-primary">Ja</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toaster" class="toaster hidden">...</div>
+
+  <script src="../js/view_module.js"></script>
 </body>
 </html>

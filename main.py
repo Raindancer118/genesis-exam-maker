@@ -182,6 +182,16 @@ class Api:
             logger.exception("delete_task Fehler: %s", e)
             return {"success": False, "message": str(e)}
 
+    def update_task(self, task_id: int, new_content: str):
+        try:
+            db = self._get_db()
+            db.update_task(task_id, new_content)
+            db.close()
+            return {"success": True, "message": "Aufgabe aktualisiert."}
+        except Exception as e:
+            logger.exception("update_task Fehler: %s", e)
+            return {"success": False, "message": str(e)}
+
     # --- Exam generation wrapper ---
     def build_exam_for_module(self, module_id: int, filename: str = ""):
         """

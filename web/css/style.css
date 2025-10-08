@@ -513,7 +513,6 @@ body {
 
 /* ==========================
    HERO: blurred background drop-in
-   Paste at end of web/css/style.css
    ========================== */
 
 /* tweakable variables — passe hier die Stärke an */
@@ -574,8 +573,6 @@ body {
 }
 
 /* --- small nudge: push hero content a bit lower, center horizontally --- */
-/* Paste at end of web/css/style.css */
-
 .hero-inner {
   /* mehr Abstand oben — verschiebt Logo + Titel nach unten */
   padding-top: 56px;
@@ -600,3 +597,28 @@ body {
 
 /* keep status dot / text readable (position unchanged) */
 .hero-inner .status-inline { /* leave top/right position intact */ }
+
+/* view_module overrides */
+.module-view { margin-top: 18px; }
+
+.pool-card {
+  min-height: 160px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.task-list.task {
+  border: 1px solid #e7eaef;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.poolsGrid, .modules-grid { gap: 16px; }
+
+/* make pools grid fill same width as header (page-inner ensures that) */
+.modules-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); align-items: stretch; }
+
+/* ensure task list section matches page width and spacing */
+#taskListSection .task-list { margin-bottom: 10px; }
