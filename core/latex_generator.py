@@ -125,3 +125,67 @@ def compile_pdf_from_tex(tex_filepath: str):
         logger.debug("Räume temporäre Dateien auf...");
         for ext in ['.aux', '.log', '.tex']:
             if os.path.exists(output_filename + ext): os.remove(output_filename + ext)
+
+            # --- convenience wrapper for exam_builder / external callers ---
+            from pathlib import Path
+            import shutil
+
+            def generate_exam_pdf(module_name, tasks, output_filename: str | None = None):
+                """
+                High-level helper:
+                - prepares output folder (data/generated_exams)
+                - makes sure assets/genesis-exam-maker.png is available under <outdir>/assets/
+                - calls generate_tex_file(...) and compile_pdf_from_tex(...)
+                - returns absolute path to generated PDF or raises RuntimeError on failure
+                """
+                logger.info("generate_exam_pdf: starting generation...")
+
+                # prepare output directory
+                project_root = Path(__file__).resolve().parent.parent
+                outdir = project_root / "data" / "generated_exams"
+                outdir.mkdir(parents=True, exist_ok=True)
+
+                # ensure logo asset is available to the .tex (template uses assets/...)
+                src_asset = project_root / "assets" / "genesis-exam-maker.png"
+                if src_asset.exists():
+                    try:
+                        dst_assets_dir = outdir / "assets"
+                        dst_assets_dir.mkdir(exist_ok=True)
+                        shutil.copy2(src_asset, dst_assets_dir / src_asset.name)
+                    except Exception as e:
+                        logger.warning("Konnte Logo nicht kopieren: %s", e)
+                else:
+                    logger.warning("Logo-Quelle nicht gefunden: %s", src_asset)
+
+                # decide base name (no extension)
+                base = (output_filename or module_name or "exam").strip()
+                # sanitize some characters for filenames
+                base = base.replace(" ", "_")
+                if base.lower().endswith(".pdf"):
+                    base = base[:-4]
+
+                base_path = str(outdir / base)  # generate_tex_file will append .tex
+
+                # generate .tex
+                tex_path, err = generate_tex_file(module_name, tasks, base_path)
+                if err:
+                    logger.error("generate_tex_file error: %s", err)
+                    raise RuntimeError(f"Tex-Generierung fehlgeschlagen: {err}")
+
+                # compile to PDF
+                ok, msg = compile_pdf_from_tex(tex_path)
+                if not ok:
+                    logger.error("LaTeX compile error: %s", msg)
+                    raise RuntimeError(f"LaTeX-Kompilierung fehlgeschlagen: {msg}")
+
+                pdf_path = Path(tex_path.replace(".tex", ".pdf")).resolve()
+                if not pdf_path.exists():
+                    # try expected fallback
+                    candidate = outdir / (base + ".pdf")
+                    if candidate.exists():
+                        pdf_path = candidate.resolve()
+                    else:
+                        raise RuntimeError(f"PDF nicht gefunden nach Kompilierung (erwartet: {pdf_path})")
+
+                logger.info("generate_exam_pdf: PDF erstellt: %s", str(pdf_path))
+                return str(pdf_path)

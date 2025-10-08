@@ -2,7 +2,7 @@
 import random
 import logging
 from .database_manager import DatabaseManager
-from .latex_generator import generate_exam_pdf
+from .latex_generator import generate_tex_file, compile_pdf_from_tex
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +12,7 @@ class ExamBuilder:
         self.db = db_manager
 
     def build_exam_for_module(self, module_id: int):
+
         logger.info(f"Baue Klausur für Modul-ID {module_id}...")
 
         module_info = self.db.get_module_by_id(module_id)

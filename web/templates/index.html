@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <title>Genesis Exam Maker</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- HERO / HEADER -->
+    <header class="hero">
+      <div class="hero-inner page-inner">
+        <img src="../../assets/genesis-exam-maker.png" alt="Genesis" class="logo" />
+        <div class="hero-text">
+          <h1>Genesis Exam Maker</h1>
+          <p class="lead">Markdown → professionelles Exam-PDF. Module, Pools & Aufgaben verwalten. Schnell, sauber, LaTeX-powered.</p>
+        </div>
+
+        <div style="margin-left:auto; display:flex; gap:10px; align-items:center;">
+          <button id="btnCreateModule" class="btn btn-primary">Neues Modul</button>
+          <button id="btnManage" class="btn btn-ghost">Module verwalten</button>
+          <button id="btnCreateExam" class="btn btn-ghost">Klausur erstellen</button>
+          <div class="system-status" style="margin-left:18px;">
+            <span id="statusDot" class="status-dot checking"></span>
+            <span id="statusText">DB: verbinde…</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="main">
+      <div class="features page-inner">
+        <h2>Features</h2>
+        <ul>
+          <li>Markdown-Editor für Aufgaben</li>
+          <li>LuaLaTeX PDF-Generierung</li>
+          <li>Config: Klausur-Zusammenstellung aus Pools</li>
+          <li>Import / Export von Aufgabensammlungen</li>
+          <li>System-Check beim Start</li>
+        </ul>
+      </div>
+
+      <section class="modules page-inner">
+        <div class="modules-header">
+          <h2>Module</h2>
+          <input id="moduleSearch" placeholder="Module filtern..." />
+        </div>
+
+        <div id="modulesGrid" class="modules-grid"></div>
+
+        <div id="modulesEmpty" class="empty-state hidden">
+          <div class="empty-card">No modules found. Bitte erstelle ein Modul.</div>
+          <div style="text-align:center; margin-top:12px;"><button id="emptyCreateBtn" class="btn btn-primary">Neues Modul anlegen</button></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="page-inner" style="display:flex; justify-content:space-between;">
+        <div class="small muted">Genesis Exam Maker — lokal</div>
+        <div id="footerStatus" class="small muted">DB: —</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modals: create module / create task / confirm -->
+  <!-- Create Module Modal -->
+  <div id="createModuleModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Neues Modul erstellen</h3>
+        <button id="closeCreateModal" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+      <div class="modal-body">
+        <input id="newModuleName" type="text" placeholder="Modulname">
+      </div>
+      <div class="modal-actions">
+        <button id="cancelCreateModule" class="btn btn-ghost">Abbrechen</button>
+        <button id="confirmCreateModule" class="btn btn-primary">Erstellen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Task Modal -->
+  <div id="createTaskModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Aufgabe hinzufügen</h3>
+        <button id="closeCreateTask" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="hint">Pool: <strong id="taskPoolInfo"></strong></div>
+        <textarea id="newTaskContent" placeholder="Aufgabe im Markdown-Format"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelCreateTask" class="btn btn-ghost">Abbrechen</button>
+        <button id="confirmCreateTask" class="btn btn-primary">Speichern</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div id="confirmModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card" style="max-width:520px;">
+      <div class="modal-header">
+        <h3 id="confirmTitle" class="modal-title">Bestätigung</h3>
+        <button id="confirmClose" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage">Bist du sicher?</p>
+      </div>
+      <div class="modal-actions">
+        <button id="confirmCancel" class="btn btn-ghost">Abbrechen</button>
+        <button id="confirmOk" class="btn btn-primary">Ja, löschen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toaster -->
+  <div id="toaster" class="toaster hidden">...</div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
