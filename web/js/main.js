@@ -1,20 +1,88 @@
 // web/js/main.js
-// Single-file main UI for landing page + inline module management
-(function(){
-  'use strict';
-  console.log('main.js (landed integrated)');
+// Robust init for pywebview-based UI
+// - binds UI handlers immediately (so buttons/modals respond)
+// - waits for pywebview.api and then performs backend calls
+// - exposes window.fetchModules for console debugging
 
-  // --- simple DOM helpers ---
-  const by = id => document.getElementById(id);
-  const q = sel => document.querySelector(sel);
-  const escapeHtml = s => String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+console.log('main.js running — startup');
+window.mainJsLoaded = true;
 
-  // --- elements ---
+document.addEventListener('DOMContentLoaded', () => {
+  // ---- helpers ----
+  function by(id){ return document.getElementById(id); }
+  function escapeHtml(s){ return String(s || '').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
+  function showToast(text, isError=false){
+    const t = by('toaster');
+    if(!t) return;
+    t.textContent = text;
+    t.style.background = isError ? 'rgba(220,60,60,0.96)' : 'rgba(20,20,20,0.94)';
+    t.classList.remove('hidden');
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(()=> t.classList.add('hidden'), 3000);
+  }
+
+  function setStatus(text, state){
+    const statusText = by('statusText');
+    const statusDot = by('statusDot');
+    const footer = by('footerStatus');
+    let mappedText = String(text || '');
+    const lower = mappedText.toLowerCase();
+
+    if (lower.includes('backend') || lower.includes('module')) {
+      if (state === 'ok' || lower.includes('erreich')) mappedText = 'DB: verbunden';
+      else if (state === 'checking' || lower.includes('warte') || lower.includes('lade') || lower.includes('prüf')) mappedText = 'DB: verbinde…';
+      else if (state === 'fail' || lower.includes('fehler') || lower.includes('nicht erreichbar')) mappedText = 'DB: nicht erreichbar';
+    } else {
+      if (!mappedText.toLowerCase().startsWith('db:') && (state === 'ok' || state === 'fail' || state === 'checking')) {
+        if (state === 'ok') mappedText = 'DB: verbunden';
+        else if (state === 'checking') mappedText = 'DB: verbinde…';
+        else if (state === 'fail') mappedText = 'DB: nicht erreichbar';
+      }
+    }
+
+    if(statusText) statusText.textContent = mappedText;
+    if(footer) footer.textContent = mappedText;
+    if(statusDot){
+      statusDot.classList.remove('ok','fail','checking');
+      if(state==='ok') statusDot.classList.add('ok');
+      else if(state==='fail') statusDot.classList.add('fail');
+      else statusDot.classList.add('checking');
+    }
+  }
+
+  async function waitForPywebviewApi(timeoutMs=7000){
+    const start = Date.now();
+    if(window.pywebview && window.pywebview.api) return window.pywebview.api;
+    return new Promise(resolve => {
+      const interval = setInterval(()=>{
+        if(window.pywebview && window.pywebview.api){
+          clearInterval(interval);
+          resolve(window.pywebview.api);
+        } else if(Date.now()-start > timeoutMs){
+          clearInterval(interval);
+          resolve(null);
+        }
+      }, 100);
+      document.addEventListener('pywebviewready', ()=>{
+        if(window.pywebview && window.pywebview.api){
+          clearInterval(interval);
+          resolve(window.pywebview.api);
+        }
+      });
+    });
+  }
+
+  // ---- DOM references ----
   const modulesGrid = by('modulesGrid');
   const modulesEmpty = by('modulesEmpty');
-  const moduleSearch = by('moduleSearch');
+  const searchInput = by('moduleSearch');
+
+  // modals + controls
   const btnCreateModule = by('btnCreateModule');
-  const emptyCreateBtn = by('emptyCreateBtn');
+  const btnManage = by('btnManage');
+  const btnCreateExam = by('btnCreateExam');
+  const btnImportExport = by('btnImportExport');
 
   const createModuleModal = by('createModuleModal');
   const newModuleName = by('newModuleName');
@@ -22,399 +90,284 @@
   const cancelCreateModule = by('cancelCreateModule');
   const closeCreateModal = by('closeCreateModal');
 
-  const createTaskModal = by('createTaskModal');
-  const newTaskContent = by('newTaskContent');
-  const confirmCreateTask = by('confirmCreateTask');
-  const cancelCreateTask = by('cancelCreateTask');
-  const closeCreateTask = by('closeCreateTask');
-  const taskPoolInfo = by('taskPoolInfo');
+  const createPoolModal = by('createPoolModal');
+  const newPoolName = by('newPoolName');
+  const confirmCreatePool = by('confirmCreatePool');
+  const cancelCreatePool = by('cancelCreatePool');
+  const closeCreatePool = by('closeCreatePool');
+  const poolModuleIdDisplay = by('poolModuleIdDisplay');
 
-  const confirmModal = by('confirmModal');
-  const confirmMessage = by('confirmMessage');
-  const confirmOk = by('confirmOk');
-  const confirmCancel = by('confirmCancel');
-  const confirmClose = by('confirmClose');
+  const createExamModal = by('createExamModal');
+  const selectModule = by('selectModule');
+  const examFilename = by('examFilename');
+  const confirmCreateExam = by('confirmCreateExam');
+  const cancelCreateExam = by('cancelCreateExam');
+  const examStatus = by('examStatus');
 
   const toaster = by('toaster');
-  const statusDot = by('statusDot');
-  const statusText = by('statusText');
-  const footerStatus = by('footerStatus');
+  const emptyCreateBtn = by('emptyCreateBtn');
 
-  // --- UI helpers ---
-  function showToast(text, isError=false){
-    if(!toaster) return;
-    toaster.textContent = text;
-    toaster.style.background = isError ? 'rgba(220,60,60,0.96)' : 'rgba(20,20,20,0.94)';
-    toaster.classList.remove('hidden');
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(()=> toaster.classList.add('hidden'), 3000);
-  }
+  // ---- UI-only bindings (work even if backend not ready) ----
+  function openModal(el){ if(!el) return; el.classList.remove('hidden'); el.querySelector('input,textarea,select')?.focus(); }
+  function closeModal(el){ if(!el) return; el.classList.add('hidden'); }
 
-  function setStatus(state, txt){
-    if(!statusDot || !statusText) return;
-    statusDot.classList.remove('ok','fail','checking');
-    statusDot.classList.add(state || 'checking');
-    const label = txt || (state==='ok' ? 'DB: verbunden' : (state==='fail' ? 'DB: nicht erreichbar' : 'DB: verbinde…'));
-    statusText.textContent = label;
-    if(footerStatus) footerStatus.textContent = label;
-  }
+  if(btnCreateModule) btnCreateModule.addEventListener('click', ()=> openModal(createModuleModal));
+  if(emptyCreateBtn) emptyCreateBtn.addEventListener('click', ()=> openModal(createModuleModal));
+  if(btnCreateExam) btnCreateExam.addEventListener('click', async ()=>{
+    await populateModuleSelect(); openModal(createExamModal);
+  });
+  if(btnImportExport) btnImportExport.addEventListener('click', ()=> window.location.href = 'import_export.html');
 
-  function openModal(el){
-    if(!el) return; el.classList.remove('hidden'); document.body.classList.add('modal-open'); setTimeout(()=> el.querySelector('input,textarea,select,button')?.focus(), 10);
-  }
-  function closeModal(el){
-    if(!el) return; el.classList.add('hidden'); document.body.classList.remove('modal-open');
-  }
+  if(cancelCreateModule) cancelCreateModule.addEventListener('click', ()=> { closeModal(createModuleModal); newModuleName.value=''; });
+  if(closeCreateModal) closeCreateModal.addEventListener('click', ()=> { closeModal(createModuleModal); newModuleName.value=''; });
+  if(confirmCreateModule) confirmCreateModule.addEventListener('click', async ()=>{
+    const name = (newModuleName.value || '').trim();
+    if(!name){ showToast('Bitte Namen eingeben', true); return; }
+    await createModule(name);
+  });
 
-  // custom confirm returning Promise<boolean>
-  function showConfirm(message, opts={okLabel:'Ja', cancelLabel:'Abbrechen'}){
-    if(!confirmModal) return Promise.resolve(window.confirm(message));
-    confirmMessage.textContent = message;
-    confirmOk.textContent = opts.okLabel || 'Ja';
-    confirmCancel.textContent = opts.cancelLabel || 'Abbrechen';
-    openModal(confirmModal);
-    return new Promise(resolve => {
-      const ok = ()=>{ cleanup(); resolve(true); };
-      const cancel = ()=>{ cleanup(); resolve(false); };
-      function cleanup(){
-        confirmOk.removeEventListener('click', ok);
-        confirmCancel.removeEventListener('click', cancel);
-        confirmClose.removeEventListener('click', cancel);
-        document.removeEventListener('keydown', escHandler);
-        closeModal(confirmModal);
-      }
-      function escHandler(e){ if(e.key === 'Escape') cancel(); }
-      confirmOk.addEventListener('click', ok);
-      confirmCancel.addEventListener('click', cancel);
-      confirmClose.addEventListener('click', cancel);
-      document.addEventListener('keydown', escHandler);
-      setTimeout(()=> confirmOk.focus(), 10);
-    });
-  }
-
-  // wait for pywebview.api
-  function waitForApi(timeout=7000){
-    const start = Date.now();
-    if(window.pywebview && window.pywebview.api) return Promise.resolve(window.pywebview.api);
-    return new Promise(resolve => {
-      const iv = setInterval(()=>{
-        if(window.pywebview && window.pywebview.api){ clearInterval(iv); resolve(window.pywebview.api); }
-        if(Date.now()-start > timeout){ clearInterval(iv); resolve(null); }
-      }, 120);
-      document.addEventListener('pywebviewready', ()=>{
-        if(window.pywebview && window.pywebview.api){ clearInterval(iv); resolve(window.pywebview.api); }
-      });
-    });
-  }
-
-  // cached api
-  let _api = null;
-  async function apiOrNull(){ if(_api) return _api; _api = await waitForApi(9000); return _api; }
-
-  // --- core: fetch modules ---
-  async function fetchModules(){
-    setStatus('checking', 'Module werden geladen…');
-    const api = await apiOrNull();
-    if(!api){ setStatus('fail', 'Backend nicht erreichbar'); renderModules([]); return; }
+  // Pool modal handlers (replaces prompt())
+  let _currentModuleForPool = null;
+  if(cancelCreatePool) cancelCreatePool.addEventListener('click', ()=> { closeModal(createPoolModal); newPoolName.value=''; _currentModuleForPool = null; poolModuleIdDisplay.textContent = '—'; });
+  if(closeCreatePool) closeCreatePool.addEventListener('click', ()=> { closeModal(createPoolModal); newPoolName.value=''; _currentModuleForPool = null; poolModuleIdDisplay.textContent = '—'; });
+  if(confirmCreatePool) confirmCreatePool.addEventListener('click', async ()=>{
+    const poolName = (newPoolName.value || '').trim();
+    if(!_currentModuleForPool){ showToast('Kein Modul gewählt', true); closeModal(createPoolModal); return; }
+    if(!poolName){ showToast('Bitte einen Pool-Namen eingeben', true); return; }
+    const api = await getApiOrNull();
+    if(!api){ showToast('Backend nicht erreichbar', true); return; }
     try{
-      const mods = await api.get_modules();
-      renderModules(Array.isArray(mods) ? mods : []);
-      setStatus('ok', 'DB: verbunden');
+      const res = await api.add_pool(poolName, parseInt(_currentModuleForPool));
+      if(res && res.success){
+        showToast('Pool erstellt');
+        closeModal(createPoolModal);
+        newPoolName.value = '';
+        _currentModuleForPool = null;
+        poolModuleIdDisplay.textContent = '—';
+        await fetchModules();
+      } else {
+        showToast(res && res.message ? res.message : 'Fehler beim Erstellen', true);
+      }
     }catch(e){
-      console.error(e); setStatus('fail', 'Fehler beim Laden'); renderModules([]);
+      console.error('createPool error', e);
+      showToast('Fehler beim Erstellen', true);
+    }
+  });
+
+  // Create Exam modal
+  if(cancelCreateExam) cancelCreateExam.addEventListener('click', ()=> { closeModal(createExamModal); examStatus.textContent=''; });
+  if(confirmCreateExam) confirmCreateExam.addEventListener('click', async ()=>{
+    const moduleId = selectModule?.value;
+    const filename = (examFilename?.value || '').trim();
+    if(!moduleId){ showToast('Bitte Modul auswählen', true); return; }
+    await buildExam(parseInt(moduleId), filename);
+  });
+
+  // allow Enter key in newModuleName to submit
+  newModuleName && newModuleName.addEventListener('keydown', (e)=>{ if(e.key==='Enter') confirmCreateModule?.click(); });
+  newPoolName && newPoolName.addEventListener('keydown', (e)=>{ if(e.key==='Enter') confirmCreatePool?.click(); });
+
+  // ---- API wrapper that waits for API if necessary ----
+  let _api = null; // cached api
+  async function getApiOrNull(){
+    if(_api) return _api;
+    _api = await waitForPywebviewApi(7000);
+    return _api;
+  }
+
+  async function createModule(name){
+    const api = await getApiOrNull();
+    if(!api){ showToast('Backend nicht erreichbar', true); return; }
+    try{
+      const res = await api.add_module(name);
+      showToast(res && res.success ? 'Modul erstellt' : (res.message || 'Fehler'));
+      closeModal(createModuleModal);
+      newModuleName.value = '';
+      await fetchModules();
+    }catch(e){
+      console.error('createModule error', e);
+      showToast('Fehler beim Erstellen', true);
     }
   }
 
+  async function buildExam(moduleId, filename){
+    const api = await getApiOrNull();
+    if(!api){ showToast('Backend nicht erreichbar', true); return; }
+    try{
+      examStatus.textContent = 'Generiere PDF...';
+      const res = await api.build_exam_for_module(moduleId, filename || '');
+      if(res && res.success){
+        examStatus.textContent = 'Fertig: ' + res.path;
+        showToast('Klausur erstellt', false);
+        setTimeout(()=> closeModal(createExamModal), 800);
+      } else {
+        examStatus.textContent = 'Fehler: ' + (res && res.message ? res.message : 'unknown');
+        showToast('Fehler bei der Erstellung', true);
+      }
+    } catch(e){
+      console.error('buildExam error', e);
+      examStatus.textContent = 'Fehler beim Generieren';
+      showToast('Fehler beim Generieren', true);
+    }
+  }
+
+  // ---- modules rendering / counts ----
   function showEmpty(yes=true){
     if(!modulesEmpty || !modulesGrid) return;
     if(yes){ modulesEmpty.classList.remove('hidden'); modulesGrid.classList.add('hidden'); }
     else { modulesEmpty.classList.add('hidden'); modulesGrid.classList.remove('hidden'); }
   }
 
-  // --- render module cards (with inline expand area) ---
   function renderModules(modules){
     if(!modulesGrid) return;
     modulesGrid.innerHTML = '';
-    if(!modules || modules.length === 0){ showEmpty(true); return; }
+    if(!modules || modules.length===0){ showEmpty(true); return; }
     showEmpty(false);
+
+    if(selectModule) selectModule.innerHTML = '<option value="">-- auswählen --</option>';
 
     for(const m of modules){
       const id = Array.isArray(m) ? m[0] : (m.id || m[0]);
       const name = Array.isArray(m) ? m[1] : (m.name || m[1]);
-
       const card = document.createElement('div');
       card.className = 'module-card';
-      card.dataset.moduleId = id;
       card.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <div style="flex:1; min-width:0;">
-            <h3 style="margin:0 0 6px;">${escapeHtml(name)}</h3>
-            <div class="meta">
-              <span class="module-count">Pools: <span data-pools="${id}">–</span></span>
-              <span>Aufgaben: <span data-tasks="${id}">–</span></span>
-            </div>
-          </div>
-          <div style="display:flex; gap:8px; margin-left:12px;">
-            <button class="btn btn-ghost btn-sm" data-action="toggle" data-id="${id}">Öffnen</button>
-            <button class="btn btn-ghost btn-sm" data-action="add-pool" data-id="${id}">Pool +</button>
-            <button class="btn btn-ghost btn-sm" data-action="delete" data-id="${id}">Löschen</button>
+        <div class="content">
+          <h3>${escapeHtml(name)}</h3>
+          <div class="meta">
+            <span class="module-count">Pools: <span data-pools="${id}">–</span></span>
+            <span>Aufgaben: <span data-tasks="${id}">–</span></span>
           </div>
         </div>
-
-        <div class="module-expanded hidden" style="margin-top:12px; border-top:1px solid #f0f2f6; padding-top:12px;">
-          <div class="pools-list"></div>
-          <div style="margin-top:10px;">
-            <small class="hint">Tipp: Pools anklicken, um Aufgaben zu sehen. Aufgaben können inline hinzugefügt werden.</small>
-          </div>
+        <div class="actions">
+          <button class="btn btn-ghost" data-action="open" data-id="${id}">Öffnen</button>
+          <button class="btn btn-ghost" data-action="add-pool" data-id="${id}">Pool +</button>
+          <button class="btn btn-ghost" data-action="delete" data-id="${id}">Löschen</button>
         </div>
       `;
       modulesGrid.appendChild(card);
 
-      // async: populate counts
+      if(selectModule){
+        const opt = document.createElement('option'); opt.value = id; opt.textContent = name;
+        selectModule.appendChild(opt);
+      }
+
+      // async counts
       (async ()=>{
         try{
-          const api = await apiOrNull(); if(!api) return;
+          const api = await getApiOrNull();
+          if(!api) return;
           const pools = await api.get_pools_for_module(id);
           const poolCount = pools ? pools.length : 0;
-          document.querySelector(`[data-pools="${id}"]`).textContent = poolCount;
+          const poolSpan = document.querySelector(`[data-pools="${id}"]`);
+          poolSpan && (poolSpan.textContent = poolCount);
+
           let taskTotal = 0;
           for(const p of (pools || [])){
-            const pid = Array.isArray(p) ? p[0] : (p.id || p[0]);
+            const pid = Array.isArray(p) ? p[0] : p.id;
             const tasks = await api.get_tasks_from_pool(pid);
             taskTotal += (tasks ? tasks.length : 0);
+            const tspan = document.querySelector(`[data-tasks="${id}"]`);
+            tspan && (tspan.textContent = taskTotal);
           }
-          const tspan = document.querySelector(`[data-tasks="${id}"]`);
-          tspan && (tspan.textContent = taskTotal);
-        }catch(e){ console.warn('count',e); }
+        }catch(e){
+          console.warn('count error', e);
+        }
       })();
     }
 
-    // attach listeners for card buttons
+    // attach handlers
     modulesGrid.querySelectorAll('button').forEach(b=>{
-      b.addEventListener('click', async ev=>{
-        const action = b.dataset.action, id = b.dataset.id;
-        if(action === 'toggle'){ toggleModuleCard(id, b); }
-        if(action === 'add-pool'){ await promptAddPool(id); }
-        if(action === 'delete'){ await handleDeleteModule(id); }
+      b.addEventListener('click', async ()=>{
+        const action = b.dataset.action;
+        const id = b.dataset.id;
+        if(action === 'open') window.location.href = `view_module.html?id=${encodeURIComponent(id)}`;
+        if(action === 'add-pool'){
+          // open our custom modal instead of prompt()
+          _currentModuleForPool = id;
+          if(poolModuleIdDisplay) poolModuleIdDisplay.textContent = id;
+          if(newPoolName) newPoolName.value = '';
+          openModal(createPoolModal);
+        }
+        if(action === 'delete'){
+          const api = await getApiOrNull();
+          if(!api){ showToast('Backend nicht erreichbar', true); return; }
+          const ok = confirm(`Modul wirklich löschen? ID ${id}`); // quick fallback; we also have a nicer confirm modal you can wire up
+          if(!ok) return;
+          try{
+            await api.delete_module(parseInt(id));
+            showToast('Löschen erfolgreich');
+            fetchModules();
+          }catch(e){
+            console.error('delete module', e);
+            showToast('Fehler beim Löschen', true);
+          }
+        }
       });
     });
   }
 
-  // --- expand module card and show pools / tasks ---
-  async function toggleModuleCard(moduleId, btn){
-    const card = modulesGrid.querySelector(`.module-card[data-module-id="${moduleId}"]`);
-    if(!card) return;
-    const expanded = card.querySelector('.module-expanded');
-    const isHidden = expanded.classList.contains('hidden');
-    if(!isHidden){ expanded.classList.add('hidden'); btn.textContent = 'Öffnen'; return; }
-
-    // expand: load pools
-    expanded.classList.remove('hidden'); btn.textContent = 'Schließen';
-    const poolsList = expanded.querySelector('.pools-list');
-    poolsList.innerHTML = '<div class="hint">Lade Pools…</div>';
-
-    const api = await apiOrNull();
-    if(!api){ poolsList.innerHTML = '<div class="hint">Backend nicht erreichbar</div>'; return; }
+  // ---- populate module select for exam modal ----
+  async function populateModuleSelect(){
+    if(!selectModule) return;
+    selectModule.innerHTML = '<option value="">-- auswählen --</option>';
+    const api = await getApiOrNull();
+    if(!api) return;
     try{
-      const pools = await api.get_pools_for_module(parseInt(moduleId));
-      if(!pools || pools.length === 0){ poolsList.innerHTML = '<div class="hint">Keine Pools. Nutze Pool + um einen anzulegen.</div>'; return; }
-      poolsList.innerHTML = '';
-      for(const p of pools){
-        const pid = Array.isArray(p) ? p[0] : (p.id || p[0]);
-        const pname = Array.isArray(p) ? p[1] : (p.name || p[1]);
-
-        const poolEl = document.createElement('div');
-        poolEl.style.padding = '8px';
-        poolEl.style.borderRadius = '8px';
-        poolEl.style.background = '#fff';
-        poolEl.style.border = '1px solid #eef0f6';
-        poolEl.style.marginBottom = '8px';
-
-        poolEl.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-weight:600;">${escapeHtml(pname)}</div>
-            <div style="display:flex; gap:8px;">
-              <button class="btn btn-ghost btn-sm" data-action="show-tasks" data-pid="${pid}">Aufgaben</button>
-              <button class="btn btn-ghost btn-sm" data-action="add-task" data-pid="${pid}">Aufgabe +</button>
-              <button class="btn btn-ghost btn-sm" data-action="del-pool" data-pid="${pid}">Löschen</button>
-            </div>
-          </div>
-          <div class="pool-tasks hidden" style="margin-top:8px;"></div>
-        `;
-        poolsList.appendChild(poolEl);
+      const mods = await api.get_modules();
+      for(const m of (mods || [])){
+        const id = Array.isArray(m) ? m[0] : (m.id || m[0]);
+        const name = Array.isArray(m) ? m[1] : (m.name || m[1]);
+        const opt = document.createElement('option'); opt.value = id; opt.textContent = name;
+        selectModule.appendChild(opt);
       }
+    }catch(e){ console.warn(e); }
+  }
 
-      // attach pool-level handlers
-      poolsList.querySelectorAll('button').forEach(pb=>{
-        pb.addEventListener('click', async e=>{
-          const act = pb.dataset.action, pid = pb.dataset.pid;
-          if(act === 'show-tasks'){ await togglePoolTasks(pid, pb); }
-          if(act === 'add-task'){ openAddTaskModal(pid); }
-          if(act === 'del-pool'){ await handleDeletePool(pid, moduleId); }
-        });
-      });
-
+  // ---- fetchModules (public) ----
+  async function fetchModules(){
+    setStatus('Warte auf Backend...', 'checking');
+    const api = await getApiOrNull();
+    if(!api){ setStatus('Backend nicht erreichbar', 'fail'); showEmpty(true); return; }
+    try{
+      setStatus('Module werden geladen...', 'checking');
+      const modules = await api.get_modules();
+      renderModules(Array.isArray(modules) ? modules : []);
+      setStatus('Backend: erreichbar', 'ok');
     }catch(e){
-      console.error(e); poolsList.innerHTML = '<div class="hint">Fehler beim Laden der Pools</div>';
+      console.error('fetchModules error', e);
+      setStatus('Fehler beim Laden', 'fail');
+      showEmpty(true);
     }
   }
 
-  // show/hide tasks for given pool
-  async function togglePoolTasks(poolId, btn){
-    const poolEl = btn.closest('div[style]'); // our created poolEl
-    if(!poolEl) return;
-    const tasksDiv = poolEl.querySelector('.pool-tasks');
-    if(!tasksDiv) return;
-    const hidden = tasksDiv.classList.contains('hidden');
-    if(!hidden){ tasksDiv.classList.add('hidden'); return; }
-    tasksDiv.classList.remove('hidden'); tasksDiv.innerHTML = '<div class="hint">Lade Aufgaben…</div>';
-    const api = await apiOrNull(); if(!api){ tasksDiv.innerHTML = '<div class="hint">Backend nicht erreichbar</div>'; return; }
-    try{
-      const tasks = await api.get_tasks_from_pool(parseInt(poolId));
-      if(!tasks || tasks.length === 0){ tasksDiv.innerHTML = '<div class="hint">Keine Aufgaben in diesem Pool.</div>'; return; }
-      tasksDiv.innerHTML = '';
-      for(const t of tasks){
-        const tid = Array.isArray(t) ? t[0] : t.id;
-        const content = Array.isArray(t) ? t[1] : t.content_md || t.content;
-        const item = document.createElement('div');
-        item.style.borderTop = '1px dashed #f0f2f6';
-        item.style.paddingTop = '8px';
-        item.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <div style="white-space:pre-wrap; max-width:720px;">${escapeHtml(String(content).slice(0,400))}${String(content).length>400?'…':''}</div>
-            <div style="display:flex; gap:8px; margin-left:12px;">
-              <button class="btn btn-ghost btn-sm" data-action="edit-task" data-tid="${tid}">Bearbeiten</button>
-              <button class="btn btn-ghost btn-sm" data-action="del-task" data-tid="${tid}">Löschen</button>
-            </div>
-          </div>`;
-        tasksDiv.appendChild(item);
-      }
-
-      // attach task handlers (delete/edit)
-      tasksDiv.querySelectorAll('button').forEach(tb=>{
-        tb.addEventListener('click', async ev=>{
-          const action = tb.dataset.action, tid = tb.dataset.tid;
-          if(action === 'del-task'){ await handleDeleteTask(tid, poolId); }
-          if(action === 'edit-task'){ showToast('Edit inline noch nicht implementiert — öffne Manage', true); }
-        });
-      });
-
-    }catch(e){ console.error(e); tasksDiv.innerHTML = '<div class="hint">Fehler beim Laden</div>'; }
-  }
-
-  // --- actions: add pool (prompt) ---
-  async function promptAddPool(moduleId){
-    const name = prompt('Name des neuen Pools:');
-    if(!name) return;
-    const api = await apiOrNull(); if(!api){ showToast('Backend nicht erreichbar', true); return; }
-    try{
-      const res = await api.add_pool(name, parseInt(moduleId));
-      if(res && (res.success || typeof res === 'number')){ showToast('Pool erstellt'); fetchModules(); }
-      else showToast((res && res.message) || 'Fehler beim Erstellen', true);
-    }catch(e){ console.error(e); showToast('Fehler beim Erstellen', true); }
-  }
-
-  // --- open add-task modal (remember pool id in dataset) ---
-  let _pendingPoolForTask = null;
-  function openAddTaskModal(poolId){
-    _pendingPoolForTask = parseInt(poolId);
-    taskPoolInfo.textContent = String(poolId);
-    newTaskContent.value = '';
-    openModal(createTaskModal);
-  }
-
-  // confirm create task
-  confirmCreateTask && confirmCreateTask.addEventListener('click', async ()=>{
-    const content = newTaskContent.value.trim();
-    if(!content){ showToast('Aufgabe leer', true); return; }
-    const poolId = _pendingPoolForTask;
-    const api = await apiOrNull(); if(!api){ showToast('Backend nicht erreichbar', true); return; }
-    try{
-      const res = await api.add_task(content, parseInt(poolId));
-      if(res && (res.success || typeof res === 'number')){ showToast('Aufgabe hinzugefügt'); closeModal(createTaskModal); fetchModules(); }
-      else showToast((res && res.message) || 'Fehler beim Speichern', true);
-    }catch(e){ console.error(e); showToast('Fehler beim Speichern', true); }
-  });
-  // cancel/close task modal
-  [cancelCreateTask, closeCreateTask].forEach(el=> el && el.addEventListener('click', ()=> closeModal(createTaskModal)));
-
-  // --- delete handlers (module/pool/task) ---
-  async function handleDeleteModule(moduleId){
-    const ok = await showConfirm('Modul wirklich löschen? Alle Pools & Aufgaben gehen verloren.', {okLabel:'Löschen', cancelLabel:'Abbrechen'});
-    if(!ok) return;
-    const api = await apiOrNull(); if(!api){ showToast('Backend nicht erreichbar', true); return; }
-    try{
-      // frontend expects API to return {success:bool, message:string} or true-ish
-      const res = await (api.delete_module ? api.delete_module(parseInt(moduleId)) : api.deleteModule ? api.deleteModule(parseInt(moduleId)) : Promise.reject('delete_module not implemented'));
-      if(res && (res.success || res === true)){ showToast(res.message || 'Gelöscht'); fetchModules(); }
-      else showToast((res && res.message) || 'Löschfehler', true);
-    }catch(e){ console.error(e); showToast('Löschen fehlgeschlagen', true); }
-  }
-
-  async function handleDeletePool(poolId, moduleId){
-    const ok = await showConfirm('Pool wirklich löschen? Alle Aufgaben darin gehen verloren.');
-    if(!ok) return;
-    const api = await apiOrNull(); if(!api){ showToast('Backend nicht erreichbar', true); return; }
-    try{
-      const res = await (api.delete_pool ? api.delete_pool(parseInt(poolId)) : Promise.reject('delete_pool not implemented'));
-      if(res && (res.success || res === true)){ showToast('Pool gelöscht'); // refresh that module card
-        // find opened module card for moduleId and re-toggle to refresh
-        const toggleBtn = modulesGrid.querySelector(`.module-card[data-module-id="${moduleId}"] button[data-action="toggle"]`);
-        if(toggleBtn){ toggleBtn.click(); setTimeout(()=> toggleBtn.click(), 250); } else fetchModules();
-      } else showToast('Fehler beim Löschen', true);
-    }catch(e){ console.error(e); showToast('Fehler beim Löschen', true); }
-  }
-
-  async function handleDeleteTask(taskId, poolId){
-    const ok = await showConfirm('Aufgabe wirklich löschen?');
-    if(!ok) return;
-    const api = await apiOrNull(); if(!api){ showToast('Backend nicht erreichbar', true); return; }
-    try{
-      const res = await (api.delete_task ? api.delete_task(parseInt(taskId)) : Promise.reject('delete_task not implemented'));
-      if(res && (res.success || res === true)){ showToast('Aufgabe gelöscht'); // refresh pool tasks
-        // find pool button and re-open tasks
-        const poolBtn = modulesGrid.querySelector(`button[data-action="show-tasks"][data-pid="${poolId}"]`);
-        if(poolBtn){ poolBtn.click(); setTimeout(()=> poolBtn.click(), 250); } else fetchModules();
-      } else showToast('Fehler beim Löschen', true);
-    }catch(e){ console.error(e); showToast('Fehler beim Löschen', true); }
-  }
-
-  // --- create module modal handlers ---
-  if(btnCreateModule) btnCreateModule.addEventListener('click', ()=> openModal(createModuleModal));
-  if(emptyCreateBtn) emptyCreateBtn.addEventListener('click', ()=> openModal(createModuleModal));
-  if(cancelCreateModule) cancelCreateModule.addEventListener('click', ()=> { newModuleName.value=''; closeModal(createModuleModal); });
-  if(closeCreateModal) closeCreateModal.addEventListener('click', ()=> { newModuleName.value=''; closeModal(createModuleModal); });
-  if(confirmCreateModule) confirmCreateModule.addEventListener('click', async ()=>{
-    const name = (newModuleName.value || '').trim();
-    if(!name){ showToast('Bitte Namen eingeben', true); return; }
-    const api = await apiOrNull(); if(!api){ showToast('Backend nicht erreichbar', true); return; }
-    try{
-      const res = await api.add_module(name);
-      if(res && (res.success || typeof res === 'number')){ showToast('Modul erstellt'); newModuleName.value=''; closeModal(createModuleModal); fetchModules(); }
-      else showToast((res && res.message) || 'Fehler', true);
-    }catch(e){ console.error(e); showToast('Fehler beim Erstellen', true); }
-  });
+  // expose for console/debugging
+  window.fetchModules = fetchModules;
+  window.openCreateModule = ()=> openModal(createModuleModal);
 
   // search filter
-  if(moduleSearch) moduleSearch.addEventListener('input', ()=>{
-    const qv = moduleSearch.value.trim().toLowerCase();
-    document.querySelectorAll('.module-card').forEach(c=>{
+  if(searchInput) searchInput.addEventListener('input', ()=>{
+    const q = searchInput.value.trim().toLowerCase();
+    modulesGrid.querySelectorAll('.module-card').forEach(c=>{
       const t = c.querySelector('h3')?.textContent?.toLowerCase() || '';
-      c.style.display = t.includes(qv) ? '' : 'none';
+      c.style.display = t.includes(q) ? '' : 'none';
     });
   });
 
-  // keyboard: Enter creates module when modal open
-  newModuleName && newModuleName.addEventListener('keydown', e=>{ if(e.key==='Enter') confirmCreateModule.click(); });
+  // start: try to fetch modules (will wait for api short time)
+  fetchModules();
 
-  // initial boot: try to connect to API then fetch
+  // Auto-retry background if backend comes later
   (async ()=>{
-    setStatus('checking','Warte auf Backend…');
-    const api = await waitForApi(9000);
-    if(api){ _api = api; setStatus('ok','DB: verbunden'); }
-    else setStatus('fail','Backend nicht erreichbar');
-    fetchModules();
+    const api = await waitForPywebviewApi(15000);
+    if(api){
+      console.log('pywebview.api now available (background)');
+      _api = api;
+      fetchModules();
+    } else {
+      console.warn('pywebview.api not available after retries');
+      setStatus('Backend nicht erreichbar', 'fail');
+    }
   })();
 
-  // expose for debugging
-  window.fetchModules = fetchModules;
-})();
+});

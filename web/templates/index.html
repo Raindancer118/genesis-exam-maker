@@ -10,21 +10,29 @@
   <div class="app-shell">
 
     <!-- HERO / HEADER -->
-    <header class="hero">
-      <div class="hero-inner page-inner">
+    <header class="hero page-inner">
+      <div class="hero-top">
         <img src="../../assets/genesis-exam-maker.png" alt="Genesis" class="logo" />
         <div class="hero-text">
           <h1>Genesis Exam Maker</h1>
           <p class="lead">Markdown → professionelles Exam-PDF. Module, Pools & Aufgaben verwalten. Schnell, sauber, LaTeX-powered.</p>
         </div>
+        <div class="status-inline">
+          <span id="statusDot" class="status-dot checking"></span>
+          <span id="statusText">DB: verbinde…</span>
+        </div>
+      </div>
 
-        <div style="margin-left:auto; display:flex; gap:10px; align-items:center;">
+      <!-- action-bar unter dem header -->
+      <div class="hero-actions">
+        <div class="action-left">
           <button id="btnCreateModule" class="btn btn-primary">Neues Modul</button>
-          <button id="btnManage" class="btn btn-ghost">Module verwalten</button>
           <button id="btnCreateExam" class="btn btn-ghost">Klausur erstellen</button>
-          <div class="system-status" style="margin-left:18px;">
-            <span id="statusDot" class="status-dot checking"></span>
-            <span id="statusText">DB: verbinde…</span>
+          <button id="btnImportExport" class="btn btn-ghost">Import / Export</button>
+        </div>
+        <div class="action-right">
+          <div class="system-status">
+            <span class="small muted">Genesis Exam Maker — lokal</span>
           </div>
         </div>
       </div>
@@ -32,7 +40,7 @@
 
     <!-- MAIN -->
     <main class="main">
-      <div class="features page-inner">
+      <div class="features card page-inner">
         <h2>Features</h2>
         <ul>
           <li>Markdown-Editor für Aufgaben</li>
@@ -43,7 +51,7 @@
         </ul>
       </div>
 
-      <section class="modules page-inner">
+      <section class="modules card page-inner">
         <div class="modules-header">
           <h2>Module</h2>
           <input id="moduleSearch" placeholder="Module filtern..." />
@@ -52,22 +60,21 @@
         <div id="modulesGrid" class="modules-grid"></div>
 
         <div id="modulesEmpty" class="empty-state hidden">
-          <div class="empty-card">No modules found. Bitte erstelle ein Modul.</div>
+          <div class="empty-card">Keine Module gefunden. Bitte erstelle ein Modul.</div>
           <div style="text-align:center; margin-top:12px;"><button id="emptyCreateBtn" class="btn btn-primary">Neues Modul anlegen</button></div>
         </div>
       </section>
     </main>
 
     <!-- FOOTER -->
-    <footer class="footer">
-      <div class="page-inner" style="display:flex; justify-content:space-between;">
-        <div class="small muted">Genesis Exam Maker — lokal</div>
-        <div id="footerStatus" class="small muted">DB: —</div>
-      </div>
+    <footer class="footer page-inner">
+      <div class="footer-left small muted">Genesis Exam Maker — lokal</div>
+      <div id="footerStatus" class="small muted">DB: —</div>
     </footer>
   </div>
 
-  <!-- Modals: create module / create task / confirm -->
+  <!-- Modals -->
+
   <!-- Create Module Modal -->
   <div id="createModuleModal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-card">
@@ -81,6 +88,24 @@
       <div class="modal-actions">
         <button id="cancelCreateModule" class="btn btn-ghost">Abbrechen</button>
         <button id="confirmCreateModule" class="btn btn-primary">Erstellen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Pool Modal (NEU) -->
+  <div id="createPoolModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Neuen Pool anlegen</h3>
+        <button id="closeCreatePool" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="hint">Wird zu Modul ID: <strong id="poolModuleIdDisplay">—</strong> hinzugefügt</div>
+        <input id="newPoolName" type="text" placeholder="Name des neuen Pools">
+      </div>
+      <div class="modal-actions">
+        <button id="cancelCreatePool" class="btn btn-ghost">Abbrechen</button>
+        <button id="confirmCreatePool" class="btn btn-primary">Anlegen</button>
       </div>
     </div>
   </div>

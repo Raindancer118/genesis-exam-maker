@@ -1,270 +1,288 @@
-/* ======================================================
-   web/css/style.css
-   Genesis Exam Maker — gesamtes Styling (Landing + Modals)
-   Replace the old file with this content
-   ====================================================== */
+/* web/css/style.css - modernes, luftiges UI + Modal-Styles */
 
-/* -------------------------
-   Base / reset-ish
-   ------------------------- */
-* { box-sizing: border-box; }
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: #f6f6f9;
-  color: #222;
-  line-height: 1.45;
-  -webkit-user-select: text;
+/* Base / tokens */
+:root{
+  --bg: #f6f6f9;
+  --card-bg: #ffffff;
+  --muted: #6b6f76;
+  --accent: #007bff;
+  --accent-2: #00a6ff;
+  --shadow-lg: 0 18px 50px rgba(10,20,40,0.08);
+  --shadow-sm: 0 6px 18px rgba(10,20,40,0.04);
+  --pad-page: 28px;
+  --page-width: 1100px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --gap: 18px;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Noto Serif", Georgia, "Times New Roman", serif;
 }
-a { color: #007bff; text-decoration: none; }
-a:hover { text-decoration: underline; }
 
-/* small utility */
-.hidden { display: none !important; }
+/* reset / body */
+* { box-sizing: border-box; }
+html,body { height:100%; margin:0; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: #222;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+  padding: 0;
+}
 
-/* -------------------------
-   App shell / main layout
-   ------------------------- */
+/* a small page container used in several places */
+.page-inner {
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  padding-left: var(--pad-page);
+  padding-right: var(--pad-page);
+}
+
+/* App shell layout */
 .app-shell {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display:flex;
+  flex-direction:column;
 }
 
-/* optional container used in older templates */
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin: 18px auto;
-  padding: 0 16px;
-}
-
-/* -------------------------
-   Hero / header area
-   ------------------------- */
+/* HERO */
 .hero {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  align-items: center;
-  padding: 28px 24px;
-  background: linear-gradient(180deg, #ffffff 0%, #fbfbfd 100%);
+  padding-top: 18px;
+  padding-bottom: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, rgba(250,250,252,1) 100%);
   box-shadow: inset 0 -1px 0 rgba(0,0,0,0.02);
-  width: 100%;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
-.hero-inner {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  width: 100%;
-  max-width: 1100px;
+
+/* top row with logo + title + status */
+.hero-top {
+  display:flex;
+  align-items:center;
+  gap:16px;
 }
+
+/* logo */
 .logo {
-  width: 84px;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(20,30,50,0.06);
-  background: white;
-  padding: 6px;
-  flex: 0 0 auto;
+  width:64px;
+  height:auto;
+  border-radius:10px;
+  padding:8px;
+  background:#fff;
+  box-shadow: var(--shadow-sm);
 }
-.hero-text { flex: 1 1 auto; }
+
+/* title block */
 .hero-text h1 {
-  margin: 0;
-  font-size: 28px;
-  letter-spacing: -0.02em;
-  font-weight: 700;
+  margin:0;
+  font-size:22px;
+  letter-spacing:-0.01em;
+  font-weight:700;
 }
 .lead {
-  margin: 4px 0 0;
-  color: #555;
-  font-size: 14px;
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:13px;
 }
 
-/* hero action row */
+/* right-side status block in header */
+.status-inline {
+  margin-left:auto;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* action bar UNDER header */
 .hero-actions {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-  max-width: 1100px;
-  justify-content: flex-start;
-  padding-top: 8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:6px;
 }
+.action-left { display:flex; gap:10px; align-items:center; }
+.action-right { display:flex; gap:10px; align-items:center; }
 
-/* -------------------------
-   Buttons (global)
-   ------------------------- */
+/* System status dot */
+.status-dot { width:10px; height:10px; border-radius:999px; display:inline-block; background:#f0ad4e; }
+.status-dot.ok { background:#28a745; } .status-dot.fail { background:#dc3545; } .status-dot.checking { background:#f0ad4e; }
+
+/* buttons - consistent */
 .btn {
   background: transparent;
   border: 1px solid rgba(0,0,0,0.08);
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight:600;
+  font-size:14px;
   color: #1b1f23;
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+  transition: all .12s ease;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  box-shadow: none;
 }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.04); }
-.btn.primary {
-  background: linear-gradient(90deg,#007bff,#00a6ff);
-  color: white;
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+.btn:active { transform: translateY(0); box-shadow:none; }
+
+/* primary variant */
+.btn-primary {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #fff;
   border: none;
+  box-shadow: 0 8px 30px rgba(3,102,214,0.12);
 }
-.btn.ghost {
+
+/* ghost / subtle */
+.btn-ghost {
   background: #fff;
-  border: 1px solid #e6e8eb;
+  border: 1px solid #eef0f6;
 }
 
-/* small button variations */
-.btn-sm { padding: 6px 10px; font-size: 13px; border-radius: 7px; }
+/* small variations */
+.btn-sm { padding:5px 8px; font-size:13px; border-radius:8px; }
 
-/* -------------------------
-   System / status area
-   ------------------------- */
-.system-status {
-  margin-top: 10px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  font-size: 13px;
-  color: #444;
-}
-.status-dot {
-  width: 10px; height: 10px; border-radius: 999px;
-  display: inline-block;
-  background: #f0ad4e;
-}
-.status-dot.ok { background: #28a745; }
-.status-dot.fail { background: #dc3545; }
-.status-dot.checking { background: #f0ad4e; }
+/* MAIN content */
+.main { flex:1; padding: 26px 0 48px; display:flex; flex-direction:column; gap:26px; }
 
-/* -------------------------
-   Main content areas
-   ------------------------- */
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  align-items: center;
-  padding: 18px 24px 40px;
-  width: 100%;
-}
-.features, .modules {
-  width: 100%;
-  max-width: 1100px;
-  background: white;
-  padding: 18px;
-  border-radius: 12px;
-  box-shadow: 0 8px 28px rgba(20,30,50,0.03);
+/* cards (features + modules) */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding:18px;
+  box-shadow: 0 8px 30px rgba(20,30,50,0.03);
 }
 
 /* features list */
-.features ul { margin: 8px 0 0; padding-left: 18px; color: #444; }
+.features ul { margin:10px 0 0; padding-left:18px; color:var(--muted); }
 
-/* -------------------------
-   Modules grid / cards
-   ------------------------- */
+/* modules section specifics */
+.modules { padding:22px; }
 .modules-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:16px;
 }
-.modules-header input,
-.modules-header .search {
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #e6e6ee;
-  width: 260px;
+.modules-header h2 { margin:0; font-size:20px; }
+.modules-header input {
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #e9eaf0;
+  min-width:220px;
+  max-width:300px;
+  background:#fff;
+  box-shadow:none;
 }
+
+/* grid */
 .modules-grid {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  display:grid;
+  grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+  gap:18px;
+  align-items:start;
 }
+
+/* module card */
 .module-card {
-  background: #fbfcff;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #eef0f6;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  background: linear-gradient(180deg,#fbfcff 0%, #ffffff 100%);
+  border-radius:10px;
+  padding:14px;
+  border:1px solid #eef2f6;
+  min-height:160px;
+  transition: transform .12s ease, box-shadow .12s ease;
 }
-.module-card h3 { margin: 0; font-size: 16px; font-weight: 700; }
+.module-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(10,20,40,0.06); }
+
+/* module heading */
+.module-card h3 { margin:0; font-size:15px; line-height:1.15; font-weight:700; }
+
+/* metadata row */
 .module-card .meta {
-  font-size: 13px;
-  color: #666;
-  display:flex; justify-content:space-between; align-items:center;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  font-size:13px;
+  color:var(--muted);
 }
-.module-actions { display:flex; gap:8px; margin-top:6px; }
+
+/* main content area (so that bottom buttons stick to bottom) */
+.module-card .content {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  flex: 1 1 auto;
+}
+
+/* actions area: will sit at bottom if we use margin-top:auto on .actions */
+.module-card .actions {
+  margin-top:auto;             /* THIS pushes the buttons to the bottom */
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+/* small button style inside cards */
+.module-card .actions .btn {
+  padding:7px 10px;
+  border-radius:8px;
+  font-size:13px;
+}
+
+/* subtle tiny text */
+.hint { color:var(--muted); font-size:13px; }
 
 /* empty state */
-.empty-state { margin-top: 12px; text-align: center; }
-.empty-card { padding: 18px; color: #666; }
+.empty-state { margin-top:14px; text-align:center; }
+.empty-card { padding:22px; color:var(--muted); background:transparent; }
 
-/* -------------------------
-   Footer / small text
-   ------------------------- */
+/* FOOTER */
 .footer {
-  display:flex; justify-content:space-between; align-items:center;
-  padding: 10px 20px; font-size: 13px; color: #666;
-  width: 100%;
-  max-width: 1100px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 20px 0;
+  color:var(--muted);
+  font-size:13px;
 }
 
-/* small muted helper */
-.small.muted { font-size: 13px; color: #666; }
-
-/* -------------------------
-   Toaster / notifications
-   ------------------------- */
+/* TOASTER */
 .toaster {
   position: fixed;
   right: 18px;
   bottom: 18px;
-  min-width: 200px;
+  min-width: 220px;
   padding: 10px 14px;
   border-radius: 10px;
   background: rgba(20,20,20,0.94);
   color: white;
   z-index: 1300;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 .toaster.hidden { display:none; }
 
-/* -------------------------
-   Modal & Form UI (complete)
-   ------------------------- */
+/* =========================
+   Modal & Form UI (robust)
+   ========================= */
 
-/* design tokens local for modals */
 :root{
-  --modal-overlay: rgba(10,12,20,0.35);
-  --card-bg: #ffffff;
-  --card-radius: 12px;
-  --card-pad: 20px;
+  --modal-overlay: rgba(10,12,20,0.45);
+  --card-pad: 18px;
   --card-max-w: 760px;
-  --card-min-w: 320px;
-  --input-max-w: 680px;
-  --input-min-w: 200px;
-  --primary: #007bff;
-  --primary-hover: #0063d6;
-  --muted: #6b6f76;
-  --shadow: 0 18px 50px rgba(10,20,40,0.10);
-  --transition-fast: 160ms;
 }
 
-/* overlay (force to top) */
+/* overlay */
 .modal {
   position: fixed !important;
   inset: 0 !important;
@@ -275,228 +293,72 @@ a:hover { text-decoration: underline; }
   z-index: 2147483646 !important;
   padding: 24px !important;
   box-sizing: border-box !important;
-  -webkit-tap-highlight-color: transparent;
 }
 
-/* hidden state */
-.modal.hidden { display: none !important; }
+/* hide */
+.modal.hidden { display:none !important; }
 
-/* card */
+/* modal card */
 .modal-card {
-  position: relative !important;
-  z-index: 2147483647 !important;
   width: 100%;
   max-width: var(--card-max-w);
-  min-width: var(--card-min-w);
   background: var(--card-bg);
-  border-radius: var(--card-radius);
+  border-radius: 12px;
   padding: var(--card-pad);
-  box-shadow: var(--shadow);
-  box-sizing: border-box;
-  transform: translateY(0);
-  transition: transform var(--transition-fast) ease, opacity var(--transition-fast) ease;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  color: #1e2226;
-}
-
-/* header + close */
-.modal-card .modal-header {
+  box-shadow: 0 24px 60px rgba(4,20,60,0.12);
   display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-}
-.modal-card .modal-title {
-  margin:0;
-  font-size: 1.25rem;
-  line-height: 1;
-  font-weight: 700;
-  color: #111;
-}
-.modal-card .modal-close {
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  line-height: 1;
-  cursor: pointer;
-  color: #666;
-  padding: 6px;
-  border-radius: 6px;
-}
-.modal-card .modal-close:hover { background: rgba(0,0,0,0.04); color: #222; }
-
-/* modal body */
-.modal-card .modal-body {
-  display:flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction:column;
+  gap:12px;
+  box-sizing:border-box;
 }
 
-/* INPUTS & SELECTS (no forced heights) */
+/* header */
+.modal-header { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.modal-title { margin:0; font-size:1.1rem; font-weight:700; }
+
+/* body */
+.modal-body { display:flex; flex-direction:column; gap:12px; }
+
+/* form controls */
 .modal-card input[type="text"],
 .modal-card input[type="search"],
-.modal-card input[type="number"],
+.modal-card textarea,
 .modal-card select {
-  display: block !important;
-  width: 100% !important;
-  max-width: var(--input-max-w) !important;
-  min-width: var(--input-min-w) !important;
-  height: 44px !important;
-  line-height: 1.2 !important;
-  padding: 10px 12px !important;
-  font-size: 14px !important;
-  color: #222 !important;
-  border-radius: 8px !important;
-  border: 1px solid #d8dbe0 !important;
-  background: #fff !important;
-  box-sizing: border-box !important;
-  outline: none !important;
-  margin: 0 auto;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e6e9ee;
+  background: #fff;
+  font-size:14px;
+  box-sizing:border-box;
+  outline: none;
 }
 
-/* TEXTAREA: bigger default, responsive */
+/* Important: larger default textarea height to avoid height:0 issues */
 .modal-card textarea {
-  display: block !important;
-  width: 100% !important;
-  max-width: var(--input-max-w) !important;
-  min-width: var(--input-min-w) !important;
-  padding: 12px 14px !important;
-  font-size: 14px !important;
-  border-radius: 8px !important;
-  border: 1px solid #d8dbe0 !important;
-  background: #fff !important;
-  box-sizing: border-box !important;
-  min-height: 220px !important;
-  height: auto !important;
-  max-height: 70vh !important;
-  overflow: auto !important;
-  resize: vertical !important;
+  min-height: 160px;
+  height: 160px;
+  resize: vertical;
 }
 
-/* focus state */
-.modal-card input:focus,
-.modal-card select:focus,
-.modal-card textarea:focus {
-  border-color: rgba(0,123,255,0.92);
-  box-shadow: 0 10px 30px rgba(3,102,214,0.06);
-  outline: none !important;
+/* modal actions */
+.modal-actions { display:flex; gap:10px; justify-content:flex-end; }
+
+/* focus states */
+.modal-card input:focus, .modal-card textarea:focus, .modal-card select:focus {
+  border-color: rgba(0,123,255,0.9);
+  box-shadow: 0 10px 30px rgba(0,123,255,0.06);
 }
 
-/* small helper / muted text */
-.modal-card .hint { color: var(--muted); font-size: 13px; }
-
-/* actions row */
-.modal-card .modal-actions {
-  display:flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 6px;
+/* responsive tweaks */
+@media (max-width:880px){
+  .modules-grid { grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); }
+  .page-inner { padding-left:18px; padding-right:18px; }
+  .logo { width:56px; }
+  .hero-text h1 { font-size:18px; }
+  .modal-card { max-width: 92vw; }
 }
 
-/* buttons inside modal (fine tuning) */
-.modal-card .btn { padding: 8px 12px; border-radius: 8px; font-size: 14px; }
-.modal-card .btn-primary { padding: 9px 14px; }
-
-/* subtle entry animation when opening */
-.modal:not(.hidden) .modal-card { animation: modal-pop 220ms cubic-bezier(.2,.9,.3,1); }
-@keyframes modal-pop {
-  0% { transform: translateY(8px) scale(.995); opacity: 0; }
-  100% { transform: translateY(0) scale(1); opacity: 1; }
-}
-
-/* ensure overlay blocks underlying interactions */
-.modal { pointer-events: auto; }
-.modal.hidden { pointer-events: none; }
-
-/* defensive override: if inline test styles are present */
-.modal-card [style*="height: 0"] { height: auto !important; min-height: 40px !important; }
-
-/* small helper: center small inline controls */
-.modal-card .field-inline { display:flex; gap:8px; align-items:center; }
-
-/* -------------------------
-   Responsive tweaks
-   ------------------------- */
-@media (max-width: 1100px) {
-  .hero-inner { max-width: 95%; }
-  .features, .modules, .footer { max-width: 95%; }
-}
-@media (max-width: 640px) {
-  :root { --card-pad: 14px; --input-max-w: 92vw; --card-max-w: 92vw; }
-  .hero { padding: 18px 12px; }
-  .hero-text h1 { font-size: 20px; }
-  .modal-card { gap: 10px; padding: var(--card-pad); }
-  .modal-card .modal-title { font-size: 1.05rem; }
-  .modules-header input { width: 100%; max-width: 340px; }
-  .module-card { padding: 12px; }
-}
-
-
-/* page inner container used by header/hero, features, modules, footer */
-.page-inner {
-  max-width: 1100px;       /* gleiche Breite wie modules / features */
-  margin: 0 auto;          /* zentrieren */
-  padding: 0 24px;         /* horizontaler Innenabstand auf allen Breakpoints */
-  box-sizing: border-box;
-  width: 100%;
-}
-
-/* make hero-inner follow same centering rules (override older width:100% issues) */
-.hero-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0;
-  box-sizing: border-box;
-  width: 100%;
-  align-items: center;
-}
-
-/* ensure features/modules/footer use same visual column */
-.features, .modules, .footer, .hero, .toaster {
-  /* keep their existing visual styles but ensure they sit in the same column */
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-}
-
-/* if some elements already have max-width but no auto margin, force it */
-.features, .modules {
-  max-width: 1100px;
-  margin: 18px auto; /* vertical breathing + centered */
-  padding-left: 18px;
-  padding-right: 18px;
-}
-
-/* tight alignment for header area: avatar and title align with the page-inner */
-.header-inner, .hero-inner, .page-inner > .hero-inner {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-/* example: if your header HTML has a direct .hero element, keep it full-width visually
-   but the inner content will be centered by .page-inner / .hero-inner */
-.hero { padding: 22px 0; }
-
-/* make sure footer text aligns with main column */
-.footer { padding: 16px 0; }
-.footer .footer-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-
-/* small screens: reduce horizontal padding so nothing overflows */
-@media (max-width: 640px) {
-  .page-inner, .hero-inner, .features, .modules, .footer .footer-inner {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-}
-
-/* safety: if some inline styles from JS/modals were toggled during debugging, force header to front */
-.app-shell, body {
-  min-width: 320px;
-  -webkit-font-smoothing: antialiased;
-}
-/* ====================================================================
-   End of file
-   ==================================================================== */
+/* tiny util */
+.hidden { display:none !important; }
+.small { font-size:13px; color:var(--muted); }
