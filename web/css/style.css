@@ -45,67 +45,82 @@ body {
   min-height: 100vh;
   display:flex;
   flex-direction:column;
+  align-items: center;           /* center horizontally */
+  justify-content: center;       /* zentriert die gesamte Ansicht vertikal */
+  gap: 18px;
+  padding-top: 18px;
+  padding-bottom: 18px;
 }
 
 /* HERO */
 .hero {
-  padding-top: 18px;
-  padding-bottom: 14px;
-  background: linear-gradient(180deg, #ffffff 0%, rgba(250,250,252,1) 100%);
-  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.02);
+  width: 100%;
   display:flex;
   flex-direction:column;
   gap:12px;
 }
 
 /* top row with logo + title + status */
+/* -> Jetzt zentriert: Text & Logo stacked vertically in the middle */
 .hero-top {
   display:flex;
-  align-items:center;
-  gap:16px;
+  flex-direction: column;
+  align-items: center;
+  gap:12px;
+  position: relative; /* needed so status-inline absolute is relative here */
 }
 
 /* logo */
 .logo {
-  width:64px;
+  width:84px;
   height:auto;
-  border-radius:10px;
-  padding:8px;
+  border-radius:12px;
+  padding:10px;
   background:#fff;
   box-shadow: var(--shadow-sm);
+  display:block;
 }
 
 /* title block */
 .hero-text h1 {
   margin:0;
-  font-size:22px;
+  font-size:32px;
   letter-spacing:-0.01em;
-  font-weight:700;
+  font-weight:800;
+  line-height:1.05;
+  text-align:center;
 }
 .lead {
-  margin:4px 0 0;
-  color:var(--muted);
-  font-size:13px;
+  margin:8px 0 0;
+  color: rgba(255,255,255,0.92);
+  font-size:15px;
+  text-align:center;
 }
 
-/* right-side status block in header */
+/* status-inline (absolute top-right within hero-top) */
 .status-inline {
-  margin-left:auto;
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  z-index: 4;
   display:flex;
-  gap:10px;
+  gap:8px;
   align-items:center;
-  color:var(--muted);
+  color: rgba(255,255,255,0.95);
+  font-weight:700;
   font-size:13px;
 }
 
-/* action bar UNDER header */
+/* action bar UNDER header - center the actions */
 .hero-actions {
   display:flex;
-  justify-content:space-between;
+  justify-content:center;
   align-items:center;
   gap:12px;
   margin-top:6px;
 }
+
+/* action groups */
 .action-left { display:flex; gap:10px; align-items:center; }
 .action-right { display:flex; gap:10px; align-items:center; }
 
@@ -142,15 +157,17 @@ body {
 
 /* ghost / subtle */
 .btn-ghost {
-  background: #fff;
-  border: 1px solid #eef0f6;
+  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #0b0b0b;
+  font-weight:700;
 }
 
 /* small variations */
 .btn-sm { padding:5px 8px; font-size:13px; border-radius:8px; }
 
 /* MAIN content */
-.main { flex:1; padding: 26px 0 48px; display:flex; flex-direction:column; gap:26px; }
+.main { flex:1; padding: 26px 0 48px; display:flex; flex-direction:column; gap:26px; width:100%; }
 
 /* cards (features + modules) */
 .card {
@@ -158,13 +175,16 @@ body {
   border-radius: var(--radius);
   padding:18px;
   box-shadow: 0 8px 30px rgba(20,30,50,0.03);
+  max-width: var(--page-width);
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* features list */
 .features ul { margin:10px 0 0; padding-left:18px; color:var(--muted); }
 
 /* modules section specifics */
-.modules { padding:22px; }
+.modules { padding:22px; max-width: var(--page-width); margin: 0 auto; box-sizing: border-box; }
 .modules-header {
   display:flex;
   justify-content:space-between;
@@ -188,7 +208,7 @@ body {
   display:grid;
   grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
   gap:18px;
-  align-items:start;
+  align-items:stretch; /* force equal-height cards */
 }
 
 /* module card */
@@ -200,7 +220,7 @@ body {
   border-radius:10px;
   padding:14px;
   border:1px solid #eef2f6;
-  min-height:160px;
+  min-height:200px;
   transition: transform .12s ease, box-shadow .12s ease;
 }
 .module-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(10,20,40,0.06); }
@@ -253,7 +273,7 @@ body {
   display:flex;
   align-items:center;
   justify-content:center;
-  padding: 20px 0;
+  padding: 10px 0;
   color:var(--muted);
   font-size:13px;
 }
@@ -354,11 +374,229 @@ body {
 @media (max-width:880px){
   .modules-grid { grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); }
   .page-inner { padding-left:18px; padding-right:18px; }
-  .logo { width:56px; }
-  .hero-text h1 { font-size:18px; }
+  .logo { width:72px; }
+  .hero-text h1 { font-size:22px; }
   .modal-card { max-width: 92vw; }
 }
 
 /* tiny util */
 .hidden { display:none !important; }
 .small { font-size:13px; color:var(--muted); }
+
+/* ---------------------------
+   ADDITIONS / OVERRIDES
+   (hero background image, crisp, centered layout,
+    card alignment safety, defensive empty-state hiding)
+   --------------------------- */
+
+/* hero background wrapper (keeps image sharp, no blur) */
+.hero-bg {
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  min-height: 320px; /* größerer, prominenter Header */
+  box-shadow: var(--shadow-lg);
+  background-image: none !important; /* we use <img> for crisp rendering */
+}
+
+/* IMPORTANT: stronger overlay so text is always readable */
+.hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.44) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* the actual <img> fills the hero */
+.hero-bg .hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: none;
+  z-index: 1;
+}
+
+/* hero-inner sits on top of overlay and image */
+.hero-inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* vertical centering of hero content */
+  gap: 18px;
+  width: 100%;
+  padding: 28px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* ensure logo sits on a light plate to remain readable */
+.logo-plate {
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+/* make hero text centered and contrasty */
+.hero-inner .hero-text {
+  flex: 1 1 auto;
+  color: #fff;
+}
+.hero-inner .hero-text h1 {
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 4px 22px rgba(0,0,0,0.6);
+  font-size: 32px;
+  line-height:1.04;
+}
+.hero-inner .hero-text p {
+  margin: 6px 0 0;
+  color: rgba(255,255,255,0.92);
+  font-size: 15px;
+}
+
+/* hero actions style when shown on image */
+.hero-inner .hero-actions .btn {
+  background: rgba(255,255,255,0.95);
+  color: #0b0b0b;
+  border: none;
+  font-weight:700;
+  box-shadow: 0 8px 30px rgba(2,10,30,0.14);
+}
+
+/* modules grid equal-height safety */
+.modules-grid .module-card {
+  display:flex;
+  flex-direction:column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+
+/* defensive: if JS erroneously leaves the empty-state visible while modules exist, hide it */
+.modules .empty-state {
+  transition: opacity .12s ease;
+}
+.modules[data-has-modules="true"] .empty-state {
+  opacity: 0;
+  height: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* small tweak: ensure cards have consistent inner spacing */
+.card, .module-card {
+  box-sizing: border-box;
+}
+
+/* accessibility: focus outlines for keyboard users */
+.btn:focus, .modal-card input:focus, .modal-card textarea:focus {
+  outline: 3px solid rgba(0,123,255,0.14);
+  outline-offset: 2px;
+}
+
+/* ==========================
+   HERO: blurred background drop-in
+   Paste at end of web/css/style.css
+   ========================== */
+
+/* tweakable variables — passe hier die Stärke an */
+:root{
+  --hero-blur: 4px;        /* Stärke des Blur-Effekts */
+  --hero-scale: 1.04;      /* leichte Vergrößerung, damit beim blurred crop keine Ränder sichtbar werden */
+  --hero-blur-darken: 0.44;/* Overlay darkness (0..1), kombiniert mit bestehendem ::before */
+}
+
+/* Defensive: ensure the hero-bg uses the <img> and we apply a blurred duplicate layer */
+.hero-bg {
+  position: relative;
+  overflow: hidden;
+}
+
+/* create a blurred duplicate of the image using a pseudo-element
+   This keeps the <img> available for crispness if you want to show a sharp variant later. */
+.hero-bg::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* sits BELOW the overlay (::before has z-index:2 in your file) */
+  background-image: url("../../assets/Hamburg.jpg"); /* same image path — keep in sync */
+  background-size: cover;
+  background-position: center center;
+  transform: scale(var(--hero-scale));
+  filter: blur(var(--hero-blur)) saturate(0.96);
+  will-change: transform, filter;
+  pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+/* keep the actual <img> (if present) but hide it visually to avoid doubling.
+   We keep the element for accessibility/SEO but make it invisible to layout. */
+.hero-bg .hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0;            /* keep it available but not visible — the pseudo BG is blurred */
+  pointer-events: none;
+}
+
+/* Increase overlay darkness a touch for readability (combines with existing ::before) */
+.hero-bg::before{
+  /* preserve existing gradient but multiply opacity with our variable */
+  background: linear-gradient(180deg, rgba(0,0,0, calc(var(--hero-blur-darken) + 0.18)) 0%, rgba(0,0,0, calc(var(--hero-blur-darken) + 0.02)) 100%);
+  z-index: 2;
+}
+
+/* Fallback: if browser doesn't support CSS filter, reduce blur and show image lightly dimmed */
+@supports not (filter: blur(1px)) {
+  .hero-bg::after { filter: none; transform: scale(1.02); background-position: center; opacity: 0.9; }
+  .hero-bg::before { background: linear-gradient(180deg, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.36) 100%); }
+}
+
+/* --- small nudge: push hero content a bit lower, center horizontally --- */
+/* Paste at end of web/css/style.css */
+
+.hero-inner {
+  /* mehr Abstand oben — verschiebt Logo + Titel nach unten */
+  padding-top: 56px;
+  padding-bottom: 28px;
+  align-items: center; /* zentriert vertikal / horizontal innerhalb hero-inner */
+}
+
+/* ensure the horizontal layout of logo + title stays centered */
+/* we keep the status-inline absolute so it stays top-right over the hero */
+.hero-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* zentriert logo+title in der Mitte */
+  gap: 16px;
+}
+
+/* small visual polish: logo sits slightly higher visually via subtle translate */
+.logo {
+  transform: translateY(2px);
+}
+
+/* keep status dot / text readable (position unchanged) */
+.hero-inner .status-inline { /* leave top/right position intact */ }
